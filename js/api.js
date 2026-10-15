@@ -1121,10 +1121,11 @@ async function extraerMediaParaGuardar(cursoOriginal) {
 // Operación inversa: reemplaza cada referencia "idb:media:<id>" por el
 // archivo real guardado en IndexedDB, para que el curso en memoria siempre
 // tenga URLs directamente utilizables (data URLs, http o rutas relativas).
-async function resolverMediaAlCargar(cursoOriginal) {
+async function resolverMediaAlCargar(cursoOriginal, { soloImagenes = false } = {}) {
   const curso = cursoOriginal;
   const tareas = [];
   const resolverCampo = (objeto, campo) => {
+    if (soloImagenes && campo !== "thumbnail") return;
     if (!objeto || !esReferenciaMediaIdb(objeto[campo])) return;
     const id = objeto[campo].slice(PREFIJO_MEDIA_IDB.length);
     tareas.push(
@@ -1161,9 +1162,21 @@ async function guardarCursosPersistidos(cursos) {
 }
 
 async function cargarCursosPersistidos(valorInicial) {
-  const cursos = cargarDatosPersistidos("cicsa_cursos", valorInicial);
-  await Promise.all(cursos.map((curso) => resolverMediaAlCargar(curso)));
-  return cursos;
+  // Mantiene video y documentos como referencias a IndexedDB. Resolverlos
+  // aquí haría que cada pantalla cargara todos los archivos de todos los cursos.
+  return cargarDatosPersistidos("cicsa_cursos", valorInicial);
+}
+
+function clonarCurso(curso) {
+  return typeof structuredClone === "function"
+    ? structuredClone(curso)
+    : JSON.parse(JSON.stringify(curso));
+}
+
+async function cargarCursosConMiniaturas(cursos) {
+  const resultado = cursos.map(clonarCurso);
+  await Promise.all(resultado.map((curso) => resolverMediaAlCargar(curso, { soloImagenes: true })));
+  return resultado;
 }
 
 DB.usuarios = cargarDatosPersistidos("cicsa_usuarios", DB.usuarios);
@@ -2647,16 +2660,16 @@ async function simularSolicitud(metodo, ruta, cuerpo) {
   // La agenda es de solo lectura y muestra únicamente cursos publicados a todos los perfiles.
   if (ruta === "/agenda/cursos" && metodo === "GET") {
     if (!sesion.activa()) throw new Error("Sesión no válida.");
-    return DB.cursos.filter((c) => c.estado === "publicado");
+    return cargarCursosConMiniaturas(DB.cursos.filter((c) => c.estado === "publicado"));
   }
 
   // ---- Cursos ----
   if (ruta === "/cursos" && metodo === "GET") {
     if (sesion.rol() === "trabajador") {
-      return DB.cursos.filter(c => c.estado === "publicado" && (c.asignadoA === "Todos" || (c.asignadoAIds || []).includes(Number(sesion.usuario().id))));
+      return cargarCursosConMiniaturas(DB.cursos.filter(c => c.estado === "publicado" && (c.asignadoA === "Todos" || (c.asignadoAIds || []).includes(Number(sesion.usuario().id)))));
     }
-    if (sesion.rol() === "instructor") return DB.cursos.filter(cursoPropioDelInstructor);
-    return DB.cursos;
+    if (sesion.rol() === "instructor") return cargarCursosConMiniaturas(DB.cursos.filter(cursoPropioDelInstructor));
+    return cargarCursosConMiniaturas(DB.cursos);
   }
   const matchCurso = ruta.match(/^\/cursos\/(\d+)$/);
   if (matchCurso && metodo === "GET") {
@@ -2676,7 +2689,9 @@ async function simularSolicitud(metodo, ruta, cuerpo) {
       if (temporal === "programado") throw new Error(`Este curso aún no está abierto. Apertura: ${new Date(curso.fechaInicio).toLocaleString("es-MX")}.`);
       if (temporal === "cerrado") throw new Error("El periodo de este curso ya terminó.");
     }
-    return curso;
+    const cursoCompleto = clonarCurso(curso);
+    await resolverMediaAlCargar(cursoCompleto);
+    return cursoCompleto;
   }
   if (ruta === "/cursos" && metodo === "POST") {
     permisos.exigir("crearCursos");
@@ -2910,7 +2925,7 @@ async function simularSolicitud(metodo, ruta, cuerpo) {
     const idUsuario = sesion.usuario()?.id;
     DB.cursos.forEach(c => recuperarEvaluacionInicial(idUsuario, c.id));
     const propio = DB.progreso[idUsuario] || {};
-    return DB.cursos
+    const resultados = DB.cursos
       .filter((c) => c.estado === "publicado")
       .map((c) => {
         const asignado = c.asignadoA === "Todos" || (Array.isArray(c.asignadoAIds) && c.asignadoAIds.includes(Number(idUsuario)));
@@ -2925,6 +2940,8 @@ async function simularSolicitud(metodo, ruta, cuerpo) {
         const acceso = cursoParaTrabajador(c, idUsuario);
         return { curso: acceso, estadoTemporal: estadoTemporalCurso(acceso), progreso: avance, asignado };
       });
+    await Promise.all(resultados.map(({ curso }) => resolverMediaAlCargar(curso, { soloImagenes: true })));
+    return resultados;
   }
   const matchCompletar = ruta.match(/^\/progreso\/leccion\/(\d+)\/completar$/);
   if (matchCompletar && metodo === "POST") {

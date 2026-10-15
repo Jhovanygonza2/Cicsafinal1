@@ -1,0 +1,30 @@
+﻿const fs=require('fs'),vm=require('vm'),assert=require('assert/strict'),PDFLib=require('../js/vendor/pdf-lib.min.js');
+const data=new Map(),localStorage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k),key:i=>[...data.keys()][i],get length(){return data.size}};
+const ctx=vm.createContext({localStorage,console,Blob,URLSearchParams,setTimeout:f=>f(),window:{location:{pathname:'/index.html',replace(){}},addEventListener(){}},fetch(){throw new Error('El PDF oficial no debe usar fetch');}});
+vm.runInContext(fs.readFileSync('js/api.js','utf8')+'\nthis.app={auth,sesion,simularSolicitud,dbListaPromise,fechaDc3Sistema};',ctx);
+vm.runInContext(fs.readFileSync('js/vendor/pdf-lib.min.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync('js/plantilla-dc3.js','utf8'),ctx);
+vm.runInContext(fs.readFileSync('js/dc3.js','utf8'),ctx);
+(async()=>{
+ const a=ctx.app;await a.dbListaPromise;const login=async(n,p)=>{const r=await a.auth.login(n,p);a.sesion.guardar(r.token,r.usuario);};
+ const original={folio:'CICSA-000123',usuarioId:98765,cursoId:45678,trabajador:'ESTRADA PI\u00d1ERA JACQUELINE',curp:'EAPJ970626MVZSXC07',puesto:'AUXILIAR DE QHSE',curso:'INTERPRETACION INTEGRAL DE LA NORMA ISO 9001:2015, ISO 14001:2015 & ISO 45001:2018',horas:16,periodoInicio:'2026-03-20',periodoFin:'2026-03-21',fecha:'2026-03-22T01:00:00Z',instructor:'DANIEL ALEJANDRO CRUZ',instructorRegistro:'AECD970210C5A',firma:''};
+ data.set('cicsa_constancias_emitidas',JSON.stringify([original]));
+ await login('instructor','Instructor2026');await assert.rejects(a.simularSolicitud('GET','/constancias/CICSA-000123/dc3'),/Super Admin/);
+ await login('ana','Admin2026');const base=await a.simularSolicitud('GET','/constancias/CICSA-000123/dc3');
+ assert.equal(base.trabajadorNombre,original.trabajador);assert.equal(base.curp,original.curp);assert.equal(base.curso,original.curso);assert.equal(base.rfc,'CIC9303278B5');assert.equal(base.ocupacion,'');assert.equal(base.areaTematica,'');
+ assert.equal(a.fechaDc3Sistema(original.fecha),'2026-03-21');
+ const D=ctx.window.DC3;
+ const muestra={...base,ocupacion:'08. GESTION Y SOPORTE ADMINISTRATIVO',areaTematica:'6000 SEGURIDAD'};
+ const previo=await D.generarPDF(muestra,true);assert.equal(previo.type,'application/pdf');assert.equal((await PDFLib.PDFDocument.load(await previo.arrayBuffer())).getPageCount(),1);
+ assert.equal(JSON.parse(data.get('cicsa_constancias_emitidas'))[0].dc3,undefined,'Las pruebas no guardan documentos');
+ await assert.rejects(a.simularSolicitud('POST','/constancias/CICSA-000123/dc3',base),/Completa/);
+ const emitido=await a.simularSolicitud('POST','/constancias/CICSA-000123/dc3',{...muestra,trabajadorNombre:'Persona falsa',curp:'FALSA',curso:'Curso falso',horas:999,empresa:'Otra',rfc:'Otro',instructor:'Otro',firmaInstructor:'Otra',representanteEmpresa:'Otro'});
+ for(const clave of ['trabajadorNombre','curp','puesto','curso','horas','instructor','registroInstructor','firmaInstructor','empresa','rfc','representanteEmpresa','representanteTrabajadores','periodoInicio','periodoFin'])assert.equal(emitido[clave],base[clave],clave+' debe venir del sistema');
+ assert.equal(emitido.ocupacion,muestra.ocupacion);assert.equal(emitido.areaTematica,muestra.areaTematica);assert.equal(emitido.formato,'cicsa-dc3-v1');
+ assert.equal((await a.simularSolicitud('POST','/constancias/CICSA-000123/dc3',{...muestra,ocupacion:'Cambio'})).ocupacion,muestra.ocupacion);
+ const pdf=await D.generarPDF(emitido);assert.equal((await PDFLib.PDFDocument.load(await pdf.arrayBuffer())).getPage(0).getWidth(),612);
+ const long={...emitido,trabajadorNombre:'Nombre compuesto extenso '.repeat(9),curso:'Nombre de curso extenso '.repeat(8),puesto:'Puesto largo '.repeat(10),ocupacion:'Ocupacion extensa '.repeat(10),instructor:'Nombre instructor extenso '.repeat(4)};
+ await D.generarPDF(long,true);
+ if(process.env.CICSA_DC3_OUTPUT){fs.writeFileSync(process.env.CICSA_DC3_OUTPUT,Buffer.from(await pdf.arrayBuffer()));fs.writeFileSync(process.env.CICSA_DC3_OUTPUT.replace('.pdf','-prueba.pdf'),Buffer.from(await previo.arrayBuffer()));}
+ console.log('PASS: DC-3 oficial sin fetch, datos coincidentes, casillas, nombres largos, prueba sin emision, permisos e historial inmutable.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

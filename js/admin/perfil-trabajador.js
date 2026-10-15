@@ -1,0 +1,135 @@
+// Perfil de la cuenta y detalle académico del trabajador.
+let solicitudPerfil = 0;
+let origenPerfil = null;
+
+function pintarIdentidadPerfil(usuario) {
+  const nombre = usuario.nombre || 'Perfil de usuario';
+  document.getElementById('perfil-trabajador-clave-dc3').textContent = `Clave D-C3: ${usuario.claveDc3 || 'Sin asignar'}`;
+  document.getElementById('perfil-trabajador-titulo').textContent = nombre;
+  document.getElementById('perfil-trabajador-correo').textContent = usuario.correo || '';
+  document.getElementById('perfil-trabajador-area').textContent = `Área: ${usuario.area || 'Sin asignar'}`;
+  document.getElementById('perfil-trabajador-iniciales').textContent = nombre.trim().split(/\s+/).slice(0, 2).map(x => x[0] || '').join('').toUpperCase();
+}
+
+async function abrirPerfilTrabajador(id, origen) {
+  const modal = document.getElementById('modal-perfil-trabajador');
+  if (!modal) return;
+  const solicitud = ++solicitudPerfil;
+  if (modal.hidden) origenPerfil = origen || document.activeElement;
+  const usuario = listaUsuarios.find(u => Number(u.id) === Number(id));
+  if (!usuario) throw new Error("El usuario ya no está disponible.");
+  ocultarPasswordPerfil();
+  modal.dataset.usuarioId = String(usuario.id);
+  const gestionar = permisos.gestionarUsuario(usuario);
+  const protegido = !gestionar || Number(usuario.id) === Number(sesion.usuario()?.id);
+  document.getElementById('perfil-trabajador-acciones').innerHTML = `
+    ${gestionar && sesion.rol() === "superadmin" ? `<button type="button" class="btn btn-secundario" id="perfil-ver-password" aria-controls="perfil-password-panel" aria-expanded="false">Ver contraseña actual</button>` : ""}
+    ${gestionar && permisos.tiene("password") ? `<button type="button" class="btn btn-secundario" data-restablecer-password="${usuario.id}">Restablecer contraseña</button>` : ""}
+    <button type="button" class="btn btn-secundario btn-toggle-usuario" data-id="${usuario.id}" data-activo="${usuario.activo}" ${protegido ? "disabled" : ""}>${usuario.activo ? "Desactivar" : "Activar"}</button>
+    <button type="button" class="btn btn-peligro" data-eliminar-usuario="${usuario.id}" ${protegido ? "disabled" : ""}>Eliminar</button>`;
+  document.getElementById("perfil-ver-password")?.addEventListener("click", mostrarPasswordPerfil);
+  pintarIdentidadPerfil(usuario || {});
+  const estado = document.getElementById('perfil-trabajador-estado');
+  const reintentar = document.getElementById('perfil-trabajador-reintentar');
+  const bloques = modal.querySelectorAll('.perfil-trabajador-metricas, .perfil-trabajador-seccion');
+  bloques.forEach(bloque => bloque.hidden = true);
+  estado.textContent = 'Cargando perfil…';
+  reintentar.hidden = true;
+  modal.hidden = false;
+  modal.setAttribute('aria-hidden', 'false');
+  modal.setAttribute('aria-busy', 'true');
+  document.body.classList.add('admin-modal-abierto');
+  modal.querySelector('.perfil-trabajador-cerrar').focus();
+
+  // El informe académico corresponde a trabajadores; las cuentas administrativas
+  // conservan su perfil de identidad sin solicitar un informe que no les aplica.
+  if (usuario?.rol !== 'trabajador') {
+    document.getElementById('perfil-trabajador-etiqueta').textContent = 'Cuenta administrativa';
+    estado.textContent = `Administrador · ${usuario.activo ? 'Cuenta activa' : 'Cuenta desactivada'}. El seguimiento académico corresponde a las cuentas de trabajador.`;
+    modal.setAttribute('aria-busy', 'false');
+    return;
+  }
+  document.getElementById('perfil-trabajador-etiqueta').textContent = 'Perfil de capacitación';
+  try {
+    const data = await reportes.perfilTrabajador(Number(id));
+    if (solicitud !== solicitudPerfil || modal.hidden) return;
+    pintarIdentidadPerfil(data.usuario || usuario || {});
+    document.getElementById('perfil-trabajador-avance').textContent = `${data.avanceGeneral || 0}%`;
+    document.getElementById('perfil-trabajador-horas').textContent = `${data.horasHechas || 0} h`;
+    document.getElementById('perfil-trabajador-cursos').textContent = `${data.cursosCompletados || 0}/${data.cursosTotal || 0}`;
+    document.getElementById('perfil-trabajador-promedio').textContent = data.promedio == null ? '—' : `${data.promedio}%`;
+    InsigniasVista.pintar(document.getElementById('perfil-trabajador-insignias'),data.insigniasDetalle || []);
+    document.getElementById('perfil-trabajador-cursos-lista').innerHTML = (data.cursos || []).map(c => `<div class="perfil-curso-fila"><div><strong>${escaparHtml(c.nombre)}</strong><small>${c.completado ? 'Completado' : 'En progreso'}</small><small>Fecha de inicio del curso: ${escaparHtml(formatearFechaInicioCurso(c.fechaInicio))}</small>${c.reapertura ? "<small>Nuevo acceso hasta: " + escaparHtml(formatoFecha(c.reapertura.fin)) + "</small>" : ""}
+${sesion.rol() === "superadmin" ? '<button type="button" class="btn btn-secundario btn-sm" data-reabrir-curso="' + c.id + '">Autorizar repetir curso</button>' : ""}</div><div><strong>${c.porcentaje || 0}%</strong>${c.calificacionEvaluacion != null ? `<small>Evaluación: ${c.calificacionEvaluacion}% (${escaparHtml(c.estadoEvaluacion || 'registrada')})</small>` : ''}${c.calificacion != null ? `<small>Examen final: ${c.calificacion}%</small>` : ''}</div></div>`).join('') || '<p class="muted">No hay cursos asignados.</p>';
+    document.querySelectorAll("[data-reabrir-curso]").forEach(boton => boton.addEventListener("click", () => ejecutarAccionAdmin(boton, async () => {
+      if (!await confirmarAdmin("¿Autorizar una nueva oportunidad para este trabajador? Comenzará desde la evaluación del curso y tendrá las horas del curso desde este momento. Se conservará el historial anterior.")) return;
+      await progreso.reabrir(Number(boton.dataset.reabrirCurso), Number(id));
+      mostrarToastAdmin("Nueva oportunidad autorizada para este trabajador.", "exito");
+      await abrirPerfilTrabajador(id);
+      await cargarTodo();
+    })));
+    bloques.forEach(bloque => bloque.hidden = false);
+    estado.textContent = '';
+  } catch (error) {
+    if (solicitud !== solicitudPerfil || modal.hidden) return;
+    estado.textContent = error.message || 'No se pudo cargar el perfil. Inténtalo de nuevo.';
+    reintentar.hidden = false;
+    reintentar.onclick = () => abrirPerfilTrabajador(id);
+  } finally {
+    if (solicitud === solicitudPerfil) modal.setAttribute('aria-busy', 'false');
+  }
+}
+
+function ocultarPasswordPerfil() {
+  const campo = document.getElementById("perfil-password-valor");
+  campo.value = "";
+  campo.type = "password";
+  document.getElementById("perfil-password-panel").hidden = true;
+  const boton = document.getElementById("perfil-ver-password");
+  if(boton){boton.textContent="Ver contraseña actual";boton.setAttribute("aria-expanded","false");}
+}
+async function mostrarPasswordPerfil() {
+  const modal=document.getElementById("modal-perfil-trabajador"), boton=document.getElementById("perfil-ver-password");
+  if(!boton || boton.disabled || sesion.rol()!=="superadmin" || modal.hidden)return;
+  if(!document.getElementById("perfil-password-panel").hidden){ocultarPasswordPerfil();return;}
+  const solicitud=solicitudPerfil, id=modal.dataset.usuarioId;
+  boton.disabled=true;
+  try {
+    const lista=await usuarios.listar();
+    if(solicitud!==solicitudPerfil || modal.hidden || sesion.rol()!=="superadmin")return;
+    const actual=lista.find(u=>String(u.id)===id);
+    if(!actual || !permisos.gestionarUsuario(actual))throw new Error("No tienes acceso a esta cuenta.");
+    if(typeof actual.password!=="string" || !actual.password)throw new Error("La contraseña actual no está disponible. Puedes restablecerla.");
+    const campo=document.getElementById("perfil-password-valor");
+    campo.type="text";campo.value=actual.password;
+    document.getElementById("perfil-password-panel").hidden=false;
+    boton.textContent="Ocultar contraseña";boton.setAttribute("aria-expanded","true");
+  } catch(error){if(solicitud===solicitudPerfil&&!modal.hidden)mostrarToastAdmin(error.message,"error");}
+  finally{boton.disabled=false;}
+}
+
+function cerrarPerfilTrabajador() {
+  const modal = document.getElementById('modal-perfil-trabajador');
+  if (!modal || modal.hidden) return;
+  ++solicitudPerfil;
+  ocultarPasswordPerfil();
+  modal.hidden = true;
+  modal.setAttribute('aria-hidden', 'true');
+  modal.setAttribute('aria-busy', 'false');
+  document.body.classList.remove('admin-modal-abierto');
+  if (origenPerfil?.isConnected) origenPerfil.focus({ preventScroll: true });
+  else document.getElementById('buscar-usuarios')?.focus({ preventScroll: true });
+  origenPerfil = null;
+}
+document.querySelectorAll('[data-cerrar-perfil-trabajador]').forEach(boton => boton.addEventListener('click', cerrarPerfilTrabajador));
+document.addEventListener('keydown', event => {
+  const modal = document.getElementById('modal-perfil-trabajador');
+  if (!modal || modal.hidden) return;
+  if (!modal.contains(event.target)) return;
+  if (event.key === 'Escape') { event.preventDefault(); cerrarPerfilTrabajador(); }
+  if (event.key !== 'Tab') return;
+  const controles = [...modal.querySelectorAll('button, a[href], input, select')].filter(el => !el.disabled && el.getClientRects().length);
+  const primero = controles[0], ultimo = controles[controles.length - 1];
+  if (event.shiftKey && document.activeElement === primero) { event.preventDefault(); ultimo.focus(); }
+  else if (!event.shiftKey && document.activeElement === ultimo) { event.preventDefault(); primero.focus(); }
+});

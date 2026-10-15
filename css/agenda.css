@@ -1,0 +1,145 @@
+/* ================================================================
+   CALENDARIO CICSA — solo visualización de cursos
+   Usa el mismo shell, menú, barra y logotipo de cada perfil.
+   ================================================================ */
+.calendar-role-shell[hidden]{display:none!important}
+.cicsa-agenda-body{margin:0;background:#f4f6f8;color:#202d34;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-width:0}
+.calendar-page-container{min-width:0}
+.calendar-worker-content{min-width:0;overflow:auto;background:#f4f6f8}
+
+.calendar-content{max-width:none;width:auto;margin:0;padding:28px clamp(20px,3vw,44px) 48px;background:#f4f6f8}
+
+
+
+
+.calendar-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0 12px}.calendar-month-controls{display:flex;align-items:center;gap:8px;min-width:0}.calendar-today,.calendar-nav{border:1px solid #d8dfe2;background:#fff;color:#26343b;border-radius:9px;height:42px;cursor:pointer;font-weight:850}.calendar-today{padding:0 16px;background:#c8212c;color:#fff;border-color:#c8212c;box-shadow:0 5px 12px rgba(198,40,40,.18)}.calendar-nav{width:42px;font-size:27px}.calendar-nav:hover{border-color:#c8212c;color:#c8212c}.calendar-month-title{margin-left:18px}.calendar-month-title strong{display:block;color:#b51f2a;font-size:29px;line-height:1}.calendar-month-title span{display:block;color:#738087;font-size:10px;margin-top:4px}.calendar-total{display:flex;align-items:center;gap:9px;padding:9px 13px;background:#fff;border:1px solid #dce1e3;border-radius:9px}.calendar-total strong{font-size:22px;color:#b51f2a}.calendar-total span{font-size:10px;color:#65727a}
+.calendar-shell{background:#fff;border:1px solid #d6dde0;border-radius:12px;overflow:hidden;box-shadow:0 5px 18px rgba(32,44,50,.065)}.calendar-weekdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:#293940;color:#fff}.calendar-weekdays div{text-align:center;padding:11px 5px;font-size:12px;font-weight:850;border-right:1px solid rgba(255,255,255,.08)}.calendar-weekdays div:last-child{border-right:0}.calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}.agenda-day{appearance:none;border:0;border-right:1px solid #e0e5e7;border-bottom:1px solid #e0e5e7;min-width:0;min-height:139px;padding:8px;background:#fff;color:#202d34;text-align:left;cursor:pointer;position:relative;transition:.15s}.agenda-day:nth-child(7n){border-right:0}.agenda-day:hover{background:#fcfcfc}.agenda-day.other-month{background:#f8f9fa;color:#aeb7bc}.agenda-day.selected{background:linear-gradient(180deg,#fff9f9,#fff);box-shadow:inset 0 0 0 2px #293940}.agenda-day.today:not(.selected) .agenda-day-number{box-shadow:inset 0 0 0 2px #c8212c;color:#c8212c}.agenda-day-number{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:12px;font-weight:900;margin-bottom:5px}.agenda-day.selected .agenda-day-number{background:#293940;color:#fff}.agenda-day.has-course:after{content:"";position:absolute;right:9px;top:12px;width:7px;height:7px;border-radius:50%;background:#c8212c}.agenda-course{display:block;color:#202d34;background:#fff0f1;border:1px solid #f2d3d6;border-left:5px solid #c8212c;border-radius:7px;padding:6px;margin-top:5px;overflow:hidden;box-shadow:0 2px 7px rgba(181,31,42,.07)}.agenda-course.available{background:#eaf7f2;border-color:#cbe9dc;border-left-color:#24a36a}.agenda-course-time{display:inline-flex;background:#c8212c;color:#fff;border-radius:4px;padding:3px 6px;font-size:8px;font-weight:900}.agenda-course.available .agenda-course-time{background:#24a36a}.agenda-course-name{display:block;font-size:10px;font-weight:900;line-height:1.2;margin-top:5px}.agenda-course-area{display:block;font-size:8px;color:#5f6c73;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.agenda-course-range{display:block;font-size:8px;color:#7a858b;margin-top:3px}.agenda-course-status{display:inline-flex;margin-top:5px;padding:3px 6px;border-radius:999px;background:#c8212c;color:#fff;font-size:7px;font-weight:900;letter-spacing:.04em}.agenda-course.available .agenda-course-status{background:#24a36a}.agenda-more{display:inline-block;margin-top:6px;padding:3px 7px;border-radius:999px;background:#edf0f1;color:#5c6970;font-size:8px;font-weight:900}.calendar-legend{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 2px 0;color:#68757c;font-size:9px}.calendar-legend span{display:flex;align-items:center;gap:5px}.calendar-legend i{display:inline-block;width:9px;height:9px;border-radius:3px}.legend-red{background:#c8212c}.legend-green{background:#24a36a}.legend-dark{background:#293940}.legend-ring{border:2px solid #c8212c;background:#fff}.calendar-updated{margin-left:auto;color:#849096}.calendar-error{grid-column:1/-1;padding:50px;text-align:center;color:#68757c;font-size:13px}.agenda-toast{position:fixed;right:20px;bottom:20px;background:#293940;color:#fff;padding:11px 14px;border-radius:9px;font-size:11px;box-shadow:0 7px 24px rgba(0,0,0,.16);opacity:0;pointer-events:none;transform:translateY(8px);transition:.2s;z-index:50}.agenda-toast.visible{opacity:1;transform:none}
+@media(max-width:1050px){.calendar-content{padding:16px}.agenda-day{min-height:125px}}
+@media(max-width:780px){.calendar-content{padding:12px}.calendar-toolbar{align-items:flex-start}.calendar-total{display:none}.calendar-month-title{margin-left:8px}.calendar-month-title strong{font-size:22px}.calendar-weekdays div{font-size:9px}.agenda-day{min-height:105px;padding:6px}.agenda-course{padding:5px}.agenda-course-range,.agenda-course-area{display:none}.agenda-course-name{font-size:8px}.agenda-course-status{font-size:6px;padding:2px 4px}.calendar-updated{margin-left:0}}
+@media(max-width:520px){.calendar-content{padding:10px}.calendar-toolbar{flex-wrap:wrap}.calendar-month-controls{width:100%}.calendar-today{height:38px;padding:0 13px}.calendar-nav{width:38px;height:38px}.calendar-month-title strong{font-size:20px}.calendar-shell{border-radius:9px}.calendar-weekdays div{padding:8px 2px;font-size:8px}.agenda-day{min-height:91px;padding:4px}.agenda-day-number{width:23px;height:23px;font-size:9px}.agenda-day.has-course:after{right:5px;top:9px;width:5px;height:5px}.agenda-course{border-left-width:3px;padding:4px;margin-top:3px}.agenda-course-time{font-size:6px;padding:2px 3px}.agenda-course-name{font-size:7px;margin-top:3px}.agenda-course-status{display:none}.calendar-legend{gap:8px;font-size:7px}}
+
+/* Calendario embebido en los paneles Admin/Super Admin/Instructor. */
+.calendario-integrado{overflow:hidden}
+.calendario-integrado .calendar-content{padding:0;background:transparent}
+
+.calendario-integrado .calendar-hero h2::before{display:none!important}
+
+
+
+
+/* ===== Calendario como apartado aislado del panel =====
+   El calendario no forma parte del flujo vertical normal. Solo se muestra
+   cuando el usuario selecciona su opción del menú, evitando que altere el
+   scroll, el detector de secciones o la navegación de los demás módulos. */
+.admin-shell .calendario-integrado[hidden] { display:none !important; }
+.admin-shell.admin-vista-calendario .contenedor-admin > * { display:none !important; }
+.admin-shell.admin-vista-calendario .contenedor-admin > .calendario-integrado {
+  display:block !important;
+  width:100%;
+  min-width:0;
+}
+.admin-shell.admin-vista-calendario .contenedor-admin {
+  align-content:start;
+}
+
+/* Encabezado compartido: la fotografia no determina la altura del contenido. */
+.calendar-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  min-height: 236px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid #e0e5e9;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 8px 28px rgba(32, 44, 50, .055);
+}
+.calendar-hero-copy {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: clamp(28px, 3.5vw, 48px);
+  position: relative;
+  z-index: 2;
+}
+.calendar-title-line { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; min-width: 0; }
+.calendar-title-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 1px solid #f4d8db;
+  border-radius: 13px;
+  background: #fff1f2;
+  color: #c8212c;
+}
+.calendar-title-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.calendar-eyebrow { display: block; margin-bottom: 10px; color: #b51f2a; font-size: 10px; font-weight: 800; letter-spacing: .16em; line-height: 1.5; }
+.calendar-hero h1,
+.calendario-integrado .calendar-hero h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #202d34;
+  font-size: clamp(27px, 2.7vw, 40px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+.calendar-hero p { max-width: 43ch; margin: 13px 0 0; color: #63717b; font-size: 14px; line-height: 1.65; }
+.calendar-hero-image { grid-column: 2; grid-row: 1; position: relative; min-width: 0; overflow: hidden; background: #293940; }
+.calendar-hero-image img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 48%; filter: grayscale(1); }
+.calendar-hero-image span { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(24,36,43,.12), rgba(24,36,43,.82)), linear-gradient(110deg, rgba(24,36,43,.08) 30%, rgba(166,23,36,.46)); }
+.calendar-hero-message {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: end;
+  position: relative;
+  z-index: 1;
+  margin: 32px;
+  padding: 0 0 0 16px;
+  border-left: 3px solid #ee3946;
+  color: #fff;
+  font-size: clamp(16px, 1.6vw, 22px);
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: .01em;
+  text-align: left;
+}
+.calendar-hero-message i { display: none; }
+@media (max-width: 1050px) {
+  .calendar-hero { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  .calendar-hero-copy { padding: 28px; }
+  .calendar-hero-message { margin: 24px; font-size: 17px; }
+}
+@media (max-width: 780px) {
+  .calendar-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; border-radius: 18px; }
+  .calendar-hero-copy { padding: 28px; }
+  .calendar-title-line { gap: 16px; }
+  .calendar-hero-image, .calendar-hero-message { display: none; }
+}
+@media (max-width: 520px) {
+  .calendar-hero-copy { padding: 24px 20px; }
+  .calendar-hero h1, .calendario-integrado .calendar-hero h2 { font-size: 28px; }
+  .calendar-hero p { font-size: 13px; }
+  .calendar-eyebrow { font-size: 9px; }
+}
+
+/* Lista completa de cursos de un día. */
+.agenda-day-dialog{box-sizing:border-box;width:min(620px,calc(100% - 32px));max-height:85vh;margin:auto;padding:24px;border:1px solid #d6dde0;border-radius:16px;background:#fff;color:#202d34;overflow:auto;box-shadow:0 18px 60px #0003}
+.agenda-day-dialog::backdrop{background:rgba(20,30,36,.55)}
+.agenda-day-dialog header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.agenda-day-dialog h2{margin:0;font-size:22px;line-height:1.3}
+.agenda-day-dialog header button{padding:8px 12px;border:1px solid #d6dde0;border-radius:8px;background:#fff;color:#202d34;cursor:pointer}
+.agenda-dialog-count{color:#63717b;font-size:14px}
+.agenda-dialog-list{display:grid;gap:10px}
+.agenda-day-dialog .agenda-course{margin:0;padding:14px}
+.agenda-day-dialog .agenda-course-name{font-size:16px;overflow-wrap:anywhere}
+.agenda-day-dialog .agenda-course-time{font-size:12px}
+.agenda-day-dialog .agenda-course-area,.agenda-day-dialog .agenda-course-range{display:block;font-size:12px;white-space:normal}
+.agenda-day-dialog .agenda-course-status{display:inline-flex;font-size:10px}

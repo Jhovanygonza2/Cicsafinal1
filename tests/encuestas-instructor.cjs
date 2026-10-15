@@ -1,0 +1,62 @@
+const fs = require("fs"), vm = require("vm"), assert = require("assert/strict");
+const data = new Map();
+let fallo = false;
+const localStorage = {getItem:k=>data.get(k)??null,setItem(k,v){if(fallo && k === "cicsa_encuestas_instructor") throw new Error("Sin espacio"); data.set(k,String(v));},removeItem:k=>data.delete(k),key:i=>[...data.keys()][i],get length(){return data.size}};
+function cargar() {
+  const ctx=vm.createContext({localStorage,console,setTimeout:fn=>{fn();return 0},URLSearchParams,window:{location:{pathname:"/index.html",replace(){}},addEventListener(){}}});
+  vm.runInContext(fs.readFileSync("js/api.js","utf8")+"\nthis.app={sesion,auth,usuarios,cursos,evaluaciones,encuestasInstructor,simularSolicitud,progreso,DB,dbListaPromise};",ctx);
+  return ctx.app;
+}
+(async()=>{
+  let a=cargar(); await a.dbListaPromise;
+  const login=async(name,pw)=>{const r=await a.auth.login(name,pw);a.sesion.guardar(r.token,r.usuario);return r.usuario;};
+  await login("ana","Admin2026");
+  const trabajador=await a.usuarios.crear({nombre:"Encuesta trabajador",correo:"encuesta@test.mx",password:"Test2026",rol:"trabajador"});
+  const instructor=await login("instructor","Instructor2026");
+  const preguntas=Array.from({length:5},(_,i)=>({id:i+1,enunciado:`Pregunta ${i}`,opciones:[{id:"a",texto:"Si"},{id:"b",texto:"No"}],correcta:"a"}));
+  const curso=await a.cursos.crear({nombre:"Curso encuesta",horas:1,modulos:[],evaluacionesIniciales:{examen:{minimaAprobatoria:80,preguntas}}});
+  await login("ana","Admin2026");
+  await a.cursos.asignar(curso.id,{asignadoAIds:[trabajador.id]});
+  await a.cursos.cambiarEstado(curso.id,"publicado","Listo");
+  await login("encuesta@test.mx","Test2026");
+  const datos={puntuaciones:{claridad:5,dominio:4,organizacion:3,materiales:4,general:5},comentario:"Buen curso <script>alert(1)</script>",usuarioId:999,instructorId:999};
+  assert.equal((await a.encuestasInstructor.estado(curso.id)).elegible,false);
+  await assert.rejects(a.encuestasInstructor.enviar(curso.id,datos),/Completa y aprueba/);
+  await assert.rejects(a.encuestasInstructor.listar(),/super admin/);
+  const respuestas=Object.fromEntries(preguntas.map(p=>[p.id,"a"]));
+  await a.evaluaciones.enviarIntento(curso.id,respuestas,"evaluacion");
+  assert.equal((await a.encuestasInstructor.estado(curso.id)).elegible,false);
+  await a.evaluaciones.enviarIntento(curso.id,Object.fromEntries(preguntas.map(p=>[p.id,"b"])),"examen");
+  assert.equal((await a.encuestasInstructor.estado(curso.id)).elegible,false);
+  await login("ana","Admin2026");
+  await a.progreso.reabrir(curso.id,trabajador.id);
+  await login("encuesta@test.mx","Test2026");
+  await a.evaluaciones.enviarIntento(curso.id,respuestas,"evaluacion");
+  await a.evaluaciones.enviarIntento(curso.id,respuestas,"examen");
+  assert.equal((await a.encuestasInstructor.estado(curso.id)).elegible,true);
+  for (const valor of [0,6,1.5,"5",null]) await assert.rejects(a.encuestasInstructor.enviar(curso.id,{...datos,puntuaciones:{...datos.puntuaciones,claridad:valor}}),/criterio/);
+  await assert.rejects(a.encuestasInstructor.enviar(curso.id,{...datos,comentario:"x".repeat(1001)}),/1000/);
+  await assert.rejects(a.encuestasInstructor.enviar(curso.id,{...datos,comentario:123}),/Comentario/);
+  fallo=true; await assert.rejects(a.encuestasInstructor.enviar(curso.id,datos),/Sin espacio/); fallo=false;
+  assert.equal((await a.encuestasInstructor.estado(curso.id)).enviada,false);
+  await a.encuestasInstructor.enviar(curso.id,datos);
+  await a.encuestasInstructor.enviar(curso.id,{...datos,comentario:"Duplicado"});
+  const estado=await a.encuestasInstructor.estado(curso.id);
+  assert.equal(estado.enviada,true); assert.equal(estado.instructor,instructor.nombre);
+  assert.equal(estado.comentario,undefined); assert.equal(estado.puntuaciones,undefined);
+  for (const [nombre,pw] of [["instructor","Instructor2026"],["administrador","AdminDemo2026"]]) {
+    await login(nombre,pw);
+    await assert.rejects(a.encuestasInstructor.listar(),/super admin/);
+    await assert.rejects(a.encuestasInstructor.estado(curso.id),/Solo el trabajador/);
+    await assert.rejects(a.encuestasInstructor.enviar(curso.id,datos),/Solo el trabajador/);
+  }
+  await login("ana","Admin2026");
+  let registros=await a.encuestasInstructor.listar();
+  assert.equal(registros.length,1); assert.equal(registros[0].usuarioId,trabajador.id); assert.equal(registros[0].instructorId,instructor.id);
+  assert.equal(registros[0].comentario,datos.comentario); assert.equal(registros[0].puntuaciones.general,5);
+  a=cargar();await a.dbListaPromise;
+  registros=await a.encuestasInstructor.listar();assert.equal(registros.length,1);
+  a.sesion.guardar("token-invalido",{id:trabajador.id,rol:"superadmin"});
+  await assert.rejects(a.encuestasInstructor.listar(),/activa/i);
+  console.log("PASS: completion gate, failed exam, validation, persistence failure/retry, duplicate prevention, attribution, role isolation and persistence after reload.");
+})().catch(e=>{console.error(e);process.exitCode=1});

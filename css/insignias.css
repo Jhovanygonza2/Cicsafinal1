@@ -1,0 +1,61 @@
+.insignias-obtenidas { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:16px; width:100%; }
+.insignia-obtenida { padding:20px; border:1px solid #e1e5eb; border-radius:14px; background:#fff; text-align:center; min-width:0; overflow-wrap:anywhere; }
+.insignia-obtenida h4 { margin:12px 0 6px; }.insignia-obtenida p { font-size:13px; color:#526577; }.insignia-obtenida small,.insignia-obtenida strong { display:block; margin-top:10px; }
+.insignia-emblema { display:inline-flex; justify-content:center; align-items:center; width:72px; height:72px; border-radius:50%; background:#f1ebff; color:#7950bb; font-size:36px; }.insignia-emblema img { max-width:100%; max-height:100%; object-fit:contain; }
+.insignias-resumen { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:12px 0; }.insignia-mini .insignia-emblema { width:36px; height:36px; font-size:20px; }
+.insignia-form-grid { display:grid; grid-template-columns:minmax(0,2fr) minmax(160px,1fr); gap:18px 20px; }
+.insignia-form-grid .campo { min-width:0; margin:0; }
+.insignia-form-grid .campo > label,.insignia-form-grid legend { display:block; margin:0 0 8px; color:#263746; font-size:14px; font-weight:700; }
+.insignia-form-grid :is(input,select,textarea) { width:100%; min-width:0; min-height:46px; box-sizing:border-box; }
+.insignia-form-grid textarea { min-height:100px; resize:vertical; }
+.insignia-campo-completo { grid-column:1 / -1; }
+.insignia-asignacion { grid-column:1 / -1; padding:14px 16px; border:1px solid #dfe6ee; border-radius:10px; background:#f7f9fc; }
+.insignia-asignacion p { margin:0 0 5px; color:#263746; font-weight:700; }
+.insignia-form-grid small { display:block; margin-top:6px; color:#64748b; font-size:12px; line-height:1.5; }
+#insignia-cursos-campo { padding:16px; border:1px solid #d5dce5; border-radius:12px; }
+.insignia-cursos-opciones { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; max-height:220px; overflow:auto; padding:4px; }
+.insignia-cursos-opciones label { display:flex; align-items:flex-start; gap:10px; min-width:0; padding:11px 12px; border:1px solid #e1e7ee; border-radius:9px; background:#fff; line-height:1.4; cursor:pointer; overflow-wrap:anywhere; }
+.insignia-cursos-opciones label:has(input:checked) { border-color:#c62828; background:#fff5f5; }
+.insignia-cursos-opciones input[type=checkbox] { flex:0 0 auto; width:17px; min-height:17px; margin:2px 0 0; }
+.insignia-imagen-campo { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:8px 16px; }
+.insignia-imagen-campo > label,.insignia-imagen-campo > small { grid-column:1 / -1; }
+.insignia-imagen-campo img { width:80px; height:80px; grid-column:2; grid-row:3 / span 2; object-fit:contain; border:1px solid #e1e7ee; border-radius:10px; padding:6px; }
+.insignia-imagen-campo #insignia-quitar-imagen { justify-self:start; }
+.insignia-form-acciones { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:18px; border-top:1px solid #e5e9ef; }
+
+#insignias-tabla-estructura { width:100%; min-width:1080px; table-layout:fixed; height:auto; }
+#insignias-tabla-estructura th,#insignias-tabla-estructura td { min-width:0; max-width:none; height:auto; padding:14px 16px; vertical-align:middle; text-align:left; overflow-wrap:anywhere; }
+#insignias-tabla-estructura th { position:sticky; top:0; z-index:2; background:#f7f9fc; }
+#insignias-tabla-estructura .col-insignia { width:20%; }
+#insignias-tabla-estructura .col-puntos { width:7%; }
+#insignias-tabla-estructura .col-descripcion { width:20%; }
+#insignias-tabla-estructura .col-asignacion { width:21%; }
+#insignias-tabla-estructura .col-estado { width:10%; }
+#insignias-tabla-estructura .col-acciones { width:22%; }
+#insignias-tabla-estructura th:nth-child(2) { text-align:center; }
+#insignias-tabla-estructura :is(th,td):nth-child(2) { width:80px!important; min-width:80px!important; max-width:80px!important; }
+.insignia-tabla-identidad-contenido { display:flex; align-items:center; gap:12px; min-width:0; }
+.insignia-tabla-emblema { display:inline-flex; flex:0 0 48px; width:48px; height:48px; align-items:center; justify-content:center; border-radius:12px; background:#f1ebff; color:#7950bb; font-size:24px; }
+.insignia-tabla-emblema img { width:42px; height:42px; object-fit:contain; }
+.insignia-tabla-nombre { display:grid; gap:3px; min-width:0; }
+.insignia-tabla-nombre strong { color:#24364b; }
+.insignia-tabla-nombre small { color:#718096; font-size:11px; }
+#insignias-tabla-estructura .insignia-tabla-puntos { min-width:0; color:inherit; text-align:center; font-weight:700; }
+.insignia-tabla-descripcion,.insignia-tabla-asignacion { color:#526577; line-height:1.45; }
+.insignia-tabla-acciones-contenido { display:flex; align-items:center; flex-wrap:wrap; gap:6px; min-width:0; white-space:normal; }
+.insignia-tabla-acciones .btn,.insignia-tabla-acciones .peligro { margin:0; }
+.insignia-tabla-vacia { padding:32px!important; text-align:center!important; color:#64748b; }
+.insignia-listado-modal { width:min(1250px,calc(100vw - 32px)); }
+.insignia-listado-modal .catalogo-herramientas { margin-bottom:16px; }
+.insignia-listado-modal .catalogo-tabla { max-height:65vh; overflow:auto; }
+@media (max-width:600px) {
+  .insignia-listado-modal { width:calc(100vw - 16px); }
+  #insignias-admin .catalogo-cabecera, #insignias-admin .catalogo-cabecera > .catalogo-acciones { align-items:stretch; flex-direction:column; }
+  .insignia-form-grid { grid-template-columns:minmax(0,1fr); gap:16px; }
+  .insignia-campo-completo,.insignia-asignacion { grid-column:1; }
+  .insignia-cursos-opciones { grid-template-columns:minmax(0,1fr); }
+  .insignia-imagen-campo { grid-template-columns:minmax(0,1fr); }
+  .insignia-imagen-campo img { grid-column:1; grid-row:auto; }
+  .insignia-form-acciones { flex-direction:column-reverse; }
+  .insignia-form-acciones .btn { width:100%; }
+}

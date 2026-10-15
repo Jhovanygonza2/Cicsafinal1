@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CICSA Capacita — Inicio</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/trabajador-paneles.css?v=contraste-2">
+  <link rel="stylesheet" href="../css/comunicados.css?v=diseno-original-20261012">
+<link rel="stylesheet" href="../css/toasts.css?v=2">
+<link rel="stylesheet" href="../css/menu-cuenta.css?v=3">
+<link rel="stylesheet" href="../css/transiciones.css?v=1">
+</head>
+<body>
+<div class="app-shell inicio-shell">
+  <aside class="app-sidebar" id="sidebar-trabajador">
+    <div class="marca marca-corporativa"><img src="../assets/cicsa-logo.jpeg" alt="CICSA" class="logo-cicsa-trabajador"><span>CAPACITACIÓN</span></div>
+    <ul class="nav-lateral">
+      <li><a href="../agenda.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16M8 14h3M13 14h3M8 17h3"></path></svg></span> Calendario de cursos</a></li>
+      <li><a href="inicio.html" class="activo"><span class="icono icono-lineal"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4v-7H9v7H5a1 1 0 0 1-1-1v-8.5Z"></path></svg></span> Inicio</a></li>
+      <li><a href="dashboard.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1"></rect><rect x="13" y="4" width="7" height="7" rx="1"></rect><rect x="4" y="13" width="7" height="7" rx="1"></rect><rect x="13" y="13" width="7" height="7" rx="1"></rect></svg></span> Mi aprendizaje</a></li>
+      <li><a href="perfil.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 19c1.4-3.2 4.3-4.8 8-4.8s6.6 1.6 8 4.8"></path></svg></span> Mi perfil</a></li>
+      <li><a href="tutorial.html"><span class="icono icono-lineal">?</span> Tutorial de uso</a></li>
+    </ul>
+    <div class="tarjeta-usuario-sidebar"><div class="avatar" id="avatar-trabajador">--</div><div><div class="nombre" id="nombre-trabajador">—</div><div class="rol">Trabajador</div></div></div>
+  </aside>
+  <div class="app-main-panel">
+    <nav class="navbar-top"><button class="btn btn-texto sidebar-toggle" id="btn-toggle-sidebar-trabajador" type="button" aria-controls="sidebar-trabajador" aria-expanded="false" aria-label="Abrir menú de navegación">☰</button><div class="navbar-centro"><div class="navbar-titulo"><h1 id="saludo-inicio">Hola</h1></div></div><div class="navbar-derecha"><button id="btn-notificaciones" type="button" aria-controls="modal-notificaciones" aria-expanded="false" class="btn btn-texto notificaciones-btn" title="Notificaciones" aria-label="Notificaciones">
+          <svg class="notificaciones-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.5 16.5h11l-1.1-1.1a2.1 2.1 0 0 1-.6-1.5V10a4.8 4.8 0 1 0-9.6 0v3.9c0 .6-.2 1.1-.6 1.5L6.5 16.5Z"></path>
+            <path d="M10 18.5a2 2 0 0 0 4 0"></path>
+          </svg><span id="notificaciones-badge" class="notificaciones-badge" style="display:none">0</span>
+        </button><details class="cuenta-menu" id="menu-cuenta">
+        <summary class="cuenta-disparador" aria-label="Abrir perfil de usuario" aria-expanded="false" aria-controls="panel-cuenta">
+          <span class="cuenta-avatar" data-cuenta-avatar aria-hidden="true">U</span>
+          <span class="cuenta-nombre-corto" data-cuenta-nombre-corto>Mi cuenta</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>
+        </summary>
+        <div class="cuenta-panel" id="panel-cuenta">
+          <div class="cuenta-identidad">
+            <span class="cuenta-etiqueta">Mi perfil</span>
+            <strong data-cuenta-nombre>Mi cuenta</strong>
+            <span class="cuenta-correo" data-cuenta-correo></span>
+            <span class="badge-rol-admin">Mi cuenta</span>
+          </div>
+          <a class="cuenta-opcion" href="../trabajador/tutorial.html">Ayuda y tutorial</a>
+          <a class="cuenta-opcion" href="../trabajador/soporte.html">Soporte</a>
+          <div class="cuenta-pie">
+            <button type="button" class="cuenta-opcion cuenta-salir" id="btn-cerrar-sesion">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v16h5M13 8l4 4-4 4M8 12h13"/></svg>
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      </details></div></nav>
+    <main class="app-contenido-top inicio-comunicados-contenido">
+      <header class="inicio-encabezado"><span class="inicio-etiqueta">CICSA · CAPACITACIÓN</span><h1>Comunicados</h1><p>Consulta las novedades, avisos y anuncios de tu organización.</p></header>
+      <div id="comunicados-trabajador" class="comunicados-trabajador-lista" aria-live="polite"></div>
+    </main>
+  </div>
+</div>
+<div id="modal-notificaciones" class="modal-notificaciones oculto" aria-hidden="true">
+  <div class="modal-notificaciones-contenido" role="dialog" aria-modal="true" aria-labelledby="notificaciones-titulo" aria-describedby="notificaciones-resumen">
+    <div class="modal-notificaciones-header">
+      <div><h3 id="notificaciones-titulo">Notificaciones</h3><p id="notificaciones-resumen">Novedades de tus cursos</p></div>
+      <button class="btn btn-texto modal-notificaciones-close" type="button" aria-label="Cerrar notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div id="lista-notificaciones" class="lista-notificaciones"></div>
+    <p id="notificaciones-error" role="alert"></p>
+    <div class="notificaciones-footer"><span id="notificaciones-estado" role="status" aria-live="polite">Novedades de tu aprendizaje</span><button type="button" id="btn-quitar-todas-notificaciones">Quitar todas</button></div>
+  </div>
+</div>
+<script src="../js/toasts.js?v=4"></script>
+<script src="../js/api.js?v=notificaciones-todos-perfiles-20261014"></script>
+<script src="../js/menu-perfil.js"></script>
+<script src="../js/notificaciones-perfil.js?v=notificaciones-todos-perfiles-20261014"></script>
+<script src="../js/inicio-comunicados.js?v=lectura-20261010"></script>
+<script src="../js/menu-cuenta.js?v=2"></script>
+</body>
+</html>

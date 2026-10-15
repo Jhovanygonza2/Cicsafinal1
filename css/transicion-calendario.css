@@ -1,0 +1,16 @@
+/* Transicion entre las paginas del trabajador y su calendario. */
+@view-transition { navigation:auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration:240ms; animation-timing-function:ease-out; }
+@keyframes entrada-calendario-trabajador {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@media(prefers-reduced-motion:no-preference) {
+  #calendar-worker-shell:not([hidden]) .calendar-content {
+    animation:entrada-calendario-trabajador 320ms ease-out;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+  @view-transition { navigation:none; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation:none; }
+}

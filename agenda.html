@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CICSA Capacita — Calendario de cursos</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/trabajador-paneles.css?v=contraste-2" />
+  <link rel="stylesheet" href="css/admin-mejoras.css?v=info-platforms-20261011" />
+  <link rel="stylesheet" href="css/agenda.css?v=lista-dia-1" />
+<link rel="stylesheet" href="css/toasts.css?v=2">
+<link rel="stylesheet" href="css/transiciones.css?v=1">
+</head>
+<body class="cicsa-agenda-body">
+
+  <!-- Shell administrativo: conserva exactamente el menú/branding de Administración e Instructor -->
+  <div id="calendar-admin-shell" class="pagina-admin admin-shell calendar-role-shell" hidden>
+    <aside class="admin-sidebar" id="admin-sidebar" aria-label="Navegación CICSA">
+      <a class="admin-sidebar-marca" href="admin/dashboard.html#resumen-admin" aria-label="CICSA · Ir al resumen">
+        <span class="admin-logo-marco"><img src="assets/cicsa-logo.jpeg" alt="CICSA" class="logo-cicsa-sidebar" width="1071" height="286"></span>
+        <span class="admin-marca-leyenda" id="calendar-sidebar-role-label">CAPACITACIÓN</span>
+      </a>
+      <button id="btn-cerrar-menu-admin" class="admin-menu-cerrar" type="button" aria-label="Cerrar navegación">×</button>
+      <nav id="calendar-admin-nav" aria-label="Módulos"></nav>
+    </aside>
+
+    <nav class="topbar-admin">
+      <button class="btn btn-texto admin-menu-toggle" id="btn-menu-admin" type="button" aria-controls="admin-sidebar" aria-expanded="true" aria-label="Contraer navegación">☰</button>
+      <div class="topbar-admin-marca">
+        <img src="assets/cicsa-logo.jpeg" alt="CICSA" class="logo-cicsa-topbar" width="1071" height="286">
+        <div class="topbar-admin-marca-texto"><span id="calendar-topbar-title">Administración de capacitación</span></div>
+      </div>
+      <div class="topbar-admin-links">
+        <span class="admin-breadcrumbs"><a id="calendar-panel-link" href="admin/dashboard.html#resumen-admin">Panel</a><span aria-hidden="true">/</span><strong>Calendario de cursos</strong></span>
+      </div>
+      <div class="topbar-admin-derecha">
+        <span class="badge-rol-admin" id="calendar-role-badge">Administrador</span>
+        <span class="topbar-admin-usuario" id="calendar-admin-name"></span>
+        <button class="btn btn-secundario btn-sm" id="btn-cerrar-sesion-admin" type="button">Cerrar sesión</button>
+      </div>
+    </nav>
+
+    <main class="contenedor-admin calendar-page-container">
+      <div id="calendar-content-admin"></div>
+    </main>
+  </div>
+
+  <!-- Shell trabajador: conserva el menú y barra propios del trabajador -->
+  <div id="calendar-worker-shell" class="app-shell calendar-role-shell" hidden>
+    <aside class="app-sidebar" id="sidebar-trabajador">
+      <div class="marca marca-corporativa"><img src="assets/cicsa-logo.jpeg" alt="CICSA" class="logo-cicsa-trabajador"><span>CAPACITACIÓN</span></div>
+      <ul class="nav-lateral">
+        <li><a class="activo" href="agenda.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"></rect><path d="M8 3v4M16 3v4M4 10h16M8 14h3M13 14h3M8 17h3"></path></svg></span> Calendario de cursos</a></li>
+        <li><a href="trabajador/inicio.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4v-7H9v7H5a1 1 0 0 1-1-1v-8.5Z"></path></svg></span> Inicio</a></li>
+        <li><a href="trabajador/dashboard.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"></rect><rect x="13" y="4" width="7" height="7" rx="1"></rect><rect x="4" y="13" width="7" height="7" rx="1"></rect><rect x="13" y="13" width="7" height="7" rx="1"></rect></svg></span> Mi aprendizaje</a></li>
+        <li><a href="trabajador/perfil.html"><span class="icono icono-lineal"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 19c1.4-3.2 4.3-4.8 8-4.8s6.6 1.6 8 4.8"></path></svg></span> Mi perfil</a></li>
+        <li><a href="trabajador/tutorial.html"><span class="icono icono-lineal">?</span> Tutorial de uso</a></li>
+      </ul>
+      <div class="tarjeta-usuario-sidebar"><div class="avatar" id="avatar-trabajador">--</div><div><div class="nombre" id="nombre-trabajador">—</div><div class="rol">Trabajador</div></div></div>
+    </aside>
+    <div class="app-main-panel">
+      <nav class="navbar-top">
+        <button class="btn btn-texto sidebar-toggle" id="btn-toggle-sidebar-trabajador" type="button" aria-controls="sidebar-trabajador" aria-expanded="false" aria-label="Abrir menú de navegación">☰</button>
+        <div class="navbar-centro"><div class="buscador-nav"><svg class="icono-lupa" viewBox="0 0 24 24"><circle cx="11" cy="11" r="5.5"></circle><path d="M16 16L20.5 20.5"></path></svg><input type="search" placeholder="Buscar cursos…" disabled></div></div>
+        <div class="navbar-derecha"><button id="btn-notificaciones" type="button" aria-controls="modal-notificaciones" aria-expanded="false" class="btn btn-texto notificaciones-btn" title="Notificaciones" aria-label="Notificaciones">
+          <svg class="notificaciones-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.5 16.5h11l-1.1-1.1a2.1 2.1 0 0 1-.6-1.5V10a4.8 4.8 0 1 0-9.6 0v3.9c0 .6-.2 1.1-.6 1.5L6.5 16.5Z"></path>
+            <path d="M10 18.5a2 2 0 0 0 4 0"></path>
+          </svg><span id="notificaciones-badge" class="notificaciones-badge" style="display:none">0</span>
+        </button><a class="disparador-perfil" href="trabajador/perfil.html"><div class="avatar" id="avatar-trabajador-compact">--</div><div class="datos"><div class="nombre" id="nombre-trabajador-compact">—</div></div></a></div>
+      </nav>
+      <main class="app-contenido-top calendar-worker-content" id="calendar-content-worker"></main>
+    </div>
+  </div>
+
+  <template id="calendar-view-template">
+    <section class="calendar-content" aria-label="Calendario de cursos">
+      <section class="calendar-hero">
+        <div class="calendar-hero-copy">
+          <div class="calendar-title-line"><span class="calendar-title-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="5" width="16" height="15" rx="3"></rect><path d="M8 3v4M16 3v4M4 10h16M8 14h2M14 14h2M8 17h2"></path></svg></span><div><span class="calendar-eyebrow">CICSA · CAPACITACIÓN</span><h1>Calendario de cursos</h1><p>Visualiza los cursos programados con su fecha, hora y área.</p></div></div>
+        </div>
+        <div class="calendar-hero-image" aria-hidden="true"><img src="assets/2.webp" alt=""><span></span></div>
+        <div class="calendar-hero-message">CAPACITACIÓN<br>PARA UN MEJOR<br>MAÑANA<i></i></div>
+      </section>
+      <section class="calendar-toolbar" aria-label="Controles del calendario">
+        <div class="calendar-month-controls"><button type="button" class="calendar-today" id="agenda-hoy">Hoy</button><button type="button" class="calendar-nav" id="agenda-prev" aria-label="Mes anterior">‹</button><button type="button" class="calendar-nav" id="agenda-next" aria-label="Mes siguiente">›</button><div class="calendar-month-title"><strong id="agenda-month">—</strong><span id="agenda-subtitle">Calendario de capacitación</span></div></div>
+        <div class="calendar-total"><strong id="agenda-total">0</strong><span>cursos publicados</span></div>
+      </section>
+      <section class="calendar-shell" aria-label="Calendario de cursos"><div class="calendar-weekdays"><div>Lunes</div><div>Martes</div><div>Miércoles</div><div>Jueves</div><div>Viernes</div><div>Sábado</div><div>Domingo</div></div><div class="calendar-days" id="agenda-days"></div></section>
+      <div class="calendar-legend"><span><i class="legend-red"></i> Curso programado</span><span><i class="legend-green"></i> Curso disponible</span><span><i class="legend-dark"></i> Fecha seleccionada</span><span><i class="legend-ring"></i> Hoy</span><span class="calendar-updated" id="calendar-updated">Actualización automática</span></div>
+    </section>
+  </template>
+
+  <div id="modal-notificaciones" class="modal-notificaciones oculto" aria-hidden="true">
+  <div class="modal-notificaciones-contenido" role="dialog" aria-modal="true" aria-labelledby="notificaciones-titulo" aria-describedby="notificaciones-resumen">
+    <div class="modal-notificaciones-header">
+      <div><h3 id="notificaciones-titulo">Notificaciones</h3><p id="notificaciones-resumen">Novedades de tus cursos</p></div>
+      <button class="btn btn-texto modal-notificaciones-close" type="button" aria-label="Cerrar notificaciones"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div id="lista-notificaciones" class="lista-notificaciones"></div>
+    <p id="notificaciones-error" role="alert"></p>
+    <div class="notificaciones-footer"><span id="notificaciones-estado" role="status" aria-live="polite">Novedades de tu aprendizaje</span><button type="button" id="btn-quitar-todas-notificaciones">Quitar todas</button></div>
+  </div>
+</div>
+  <div id="agenda-toast" class="agenda-toast" role="status" aria-live="polite"></div>
+  <script src="js/toasts.js?v=4"></script>
+<script src="js/api.js?v=notificaciones-todos-perfiles-20261014"></script>
+  <script src="js/agenda.js?v=entrada-suave-2"></script>
+<script src="js/notificaciones-perfil.js?v=notificaciones-todos-perfiles-20261014"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.versiones-curso-modal { width: min(740px, calc(100vw - 32px)); max-height: 85vh; overflow: auto; padding: 24px; border: 1px solid #dce3e8; border-radius: 16px; color: #263238; }
+.versiones-curso-modal::backdrop { background: rgb(0 0 0 / 50%); }
+.versiones-curso-modal header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.versiones-curso-modal li { padding: 16px 0; border-bottom: 1px solid #dce3e8; overflow-wrap: anywhere; }
+.versiones-curso-modal li p { white-space: pre-wrap; }
+
+.curso-admin-card .curso-titulo-con-version { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.curso-admin-card .curso-version-etiqueta { display: inline-flex; align-items: center; flex-shrink: 0; padding: 4px 10px; border: 1px solid #d5dfe8; border-radius: 999px; background: #edf3f8; color: #344a5e; font-size: 13px; font-weight: 700; line-height: 1.4; }

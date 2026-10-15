@@ -1,0 +1,94 @@
+/* Estilos del apartado Inicio y del administrador de comunicados */
+.inicio-comunicados-contenido{max-width:1240px;margin:0 auto;width:100%;padding:clamp(22px,4vw,42px)!important}
+.inicio-encabezado{margin-bottom:26px}.inicio-encabezado h1{font-size:clamp(27px,3vw,36px);margin:7px 0;color:#222}.inicio-encabezado p{color:#667085;margin:0}.inicio-etiqueta{font-size:11px;font-weight:800;letter-spacing:.13em;color:#bf2029}
+.comunicados-trabajador-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}.comunicado-tarjeta{display:flex;flex-direction:row;align-items:stretch;min-width:0;min-height:210px;overflow:hidden;background:#fff;border:1px solid #e5e7eb;border-radius:17px;box-shadow:0 8px 26px #1f29370b}.comunicado-imagen{display:block;flex:0 0 clamp(220px,28%,320px);width:clamp(220px,28%,320px);height:230px;min-height:0;max-height:230px;align-self:center;object-fit:cover;background:#f3f4f6}.comunicado-sin-imagen{display:none}.comunicado-sin-imagen span{display:none}.comunicado-sin-imagen small{display:none}.comunicado-tarjeta.sin-imagen .comunicado-cuerpo{padding:26px 30px}.comunicado-solo-imagen{font-style:italic;color:#7b8492!important}.comunicado-cuerpo{display:flex;flex:1;min-width:0;flex-direction:column;justify-content:center;padding:22px 28px}.comunicado-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}.comunicado-categoria{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:#fae9ea;color:#b91f28;font-size:12px;font-weight:700}.comunicado-meta time{font-size:12px;color:#7b8492}.comunicado-cuerpo h2{margin:0 0 10px;font-size:22px;color:#20242b}.comunicado-cuerpo p{white-space:normal;line-height:1.7;color:#596273;margin:0;overflow-wrap:anywhere}.comunicados-vacio{text-align:center;padding:58px 22px;background:#fff;border:1px dashed #d6dbe2;border-radius:16px;color:#667085;grid-column:1/-1}.comunicados-vacio h2{color:#2c3440;margin:15px 0 8px}.comunicados-vacio p{margin:0}.comunicados-vacio-icono{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#fae9ea;color:#b91f28;font-weight:800;font-size:23px;margin:auto}
+.admin-comunicados .admin-seccion-cabecera{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}.comunicado-formulario{display:grid;gap:16px;background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:22px;margin:20px 0 28px}.comunicado-formulario label{display:grid;gap:8px;font-weight:650;color:#374151}.comunicado-formulario input:not([type=file]),.comunicado-formulario select,.comunicado-formulario textarea{width:100%;box-sizing:border-box;border:1px solid #d4d9e1;border-radius:9px;padding:11px 12px;font:inherit;background:#fff;color:#1f2937}.comunicado-formulario textarea{resize:vertical}.comunicado-formulario input[type=file]{font:inherit;padding:10px;border:1px dashed #cbd0d8;border-radius:9px}.comunicado-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.comunicado-form-acciones{display:flex;gap:10px;flex-wrap:wrap}.comunicados-admin-lista-cabecera h3{display:flex;gap:12px;align-items:center}.comunicados-admin-lista-cabecera h3 span{font-size:12px;color:#a51d25;background:#fae9ea;border-radius:20px;padding:5px 10px}.comunicados-admin-lista{display:grid;gap:14px}.comunicado-admin-item{display:flex;gap:16px;padding:15px;background:#fff;border:1px solid #e5e7eb;border-radius:13px;min-width:0}.comunicado-admin-item>img,.comunicado-admin-sin-imagen{width:145px;height:125px;object-fit:cover;border-radius:9px;background:#f3f4f6;flex:0 0 auto}.comunicado-admin-sin-imagen{display:grid;place-items:center;color:#9ca3af;font-size:12px;font-weight:700}.comunicado-admin-item-info{min-width:0;flex:1}.comunicado-admin-item-info h4{font-size:17px;margin:9px 0}.comunicado-admin-item-info p{color:#667085;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 8px}.comunicado-admin-item-info small{color:#7b8492}.comunicado-admin-item-acciones{display:flex;gap:8px;margin-top:12px}.comunicados-admin-vacio{color:#6b7280;padding:18px;background:#fff;border-radius:10px}.campo-ayuda{font-size:12px;color:#7b8492;font-weight:400}.comunicado-formulario [role=status]{margin:0;color:#a51d25;font-size:13px}
+@media(max-width:900px){.comunicado-tarjeta{flex-direction:column;min-height:0}.comunicado-imagen{flex:0 0 auto;width:100%;height:clamp(200px,32vw,260px);min-height:0;max-height:260px}.comunicado-cuerpo{padding:22px 24px}.comunicado-tarjeta.sin-imagen .comunicado-cuerpo{padding:24px}.comunicado-form-grid{grid-template-columns:1fr}.comunicado-formulario label{min-width:0}.comunicado-formulario input[type=file]{max-width:100%}.comunicado-admin-item{flex-direction:column}.comunicado-admin-item>img,.comunicado-admin-sin-imagen{width:100%;height:190px}}
+@media(max-width:640px){.comunicado-form-grid{grid-template-columns:1fr}.comunicado-tarjeta{flex-direction:column;min-height:0}.comunicado-imagen{flex:0 0 auto;width:100%;height:210px;min-height:0;max-height:210px}.comunicado-cuerpo{padding:18px}.comunicado-tarjeta.sin-imagen .comunicado-cuerpo{padding:20px}.comunicado-admin-item{flex-direction:column}.comunicado-admin-item>img,.comunicado-admin-sin-imagen{width:100%;height:180px}.comunicado-formulario{padding:15px}.inicio-comunicados-contenido{padding:22px 16px!important}}
+
+/* Encabezado de Inicio en telefonos y tablets, dentro del flujo del contenido. */
+@media (max-width: 1024px) {
+  .inicio-shell .app-main-panel {
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .app-shell.inicio-shell > .app-main-panel > .navbar-top {
+    position: sticky;
+    inset: 0 0 auto;
+    height: auto;
+    min-height: 72px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: max(8px, env(safe-area-inset-top)) 16px 8px;
+  }
+
+  .inicio-shell .navbar-centro,
+  .inicio-shell .navbar-titulo {
+    min-width: 0;
+  }
+
+  .inicio-shell .navbar-centro {
+    justify-content: flex-start;
+  }
+
+  .inicio-shell .navbar-titulo h1 {
+    margin: 0;
+    font-size: clamp(18px, 3vw, 26px);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .inicio-shell .navbar-derecha {
+    flex-shrink: 0;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  .inicio-shell .disparador-perfil .datos {
+    display: none;
+  }
+
+  .inicio-shell .comunicados-vacio {
+    padding: 36px 18px;
+  }
+
+  .inicio-shell .comunicados-vacio h2 {
+    font-size: clamp(20px, 3vw, 24px);
+    line-height: 1.3;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-shell.inicio-shell > .app-main-panel > .navbar-top {
+    padding-inline: 12px;
+    column-gap: 6px;
+  }
+
+  .inicio-shell .navbar-derecha {
+    gap: 4px;
+  }
+
+  .inicio-shell .disparador-perfil {
+    padding: 4px;
+  }
+
+}
+#comunicado-modal .comunicado-formulario{margin:0;padding:0;border:0;box-shadow:none;background:transparent}#comunicado-modal select{width:100%;box-sizing:border-box}#comunicado-modal .comunicado-form-acciones{margin-top:20px;gap:12px}#btn-nuevo-comunicado{margin:16px 0}
+
+/* Comunicados: lectura y jerarquía visual. */
+.inicio-shell .inicio-comunicados-contenido{max-width:1180px;padding:clamp(20px,3vw,36px)!important}
+.inicio-shell .inicio-encabezado{padding:0 0 22px;margin-bottom:24px;border-bottom:1px solid #e0e6ed}
+.inicio-shell .inicio-encabezado h1{font-size:clamp(26px,3vw,34px);font-weight:750;letter-spacing:-.035em;margin:8px 0 10px;color:#243449}
+.inicio-shell .inicio-encabezado p{font-size:14px;line-height:1.6;color:#68788c}
+.inicio-shell .comunicado-tarjeta{display:grid;grid-template-columns:minmax(260px,44%) minmax(0,1fr);min-height:0;border:1px solid #e0e6ee;border-radius:16px;box-shadow:0 4px 18px #20324d06;align-items:stretch}
+.inicio-shell .comunicado-tarjeta.sin-imagen{grid-template-columns:1fr;border-left:4px solid #be2028}
+.inicio-shell .comunicado-imagen{display:block;width:100%;height:auto;min-height:0;max-height:none;object-fit:contain;align-self:center;background:#f0f3f7}
+.inicio-shell .comunicado-cuerpo{padding:26px 28px;gap:4px;justify-content:center}
+.inicio-shell .comunicado-meta{margin-bottom:12px;gap:10px}
+.inicio-shell .comunicado-categoria{font-size:11px;letter-spacing:.02em;background:#fff1f1;color:#ac2028;padding:6px 11px;border:1px solid #f8dfe1}
+.inicio-shell .comunicado-meta time{font-size:11px;color:#76859a}
+.inicio-shell .comunicado-cuerpo h2{font-size:clamp(19px,2vw,24px);line-height:1.35;letter-spacing:-.025em;font-weight:700;color:#243449;overflow-wrap:anywhere}
+.inicio-shell .comunicado-cuerpo p{font-size:14px;line-height:1.8;color:#607086}
+@media(max-width:800px){.inicio-shell .comunicado-tarjeta{grid-template-columns:1fr}.inicio-shell .comunicado-imagen{width:100%;height:auto;min-height:0;max-height:none}.inicio-shell .comunicado-cuerpo,.inicio-shell .comunicado-tarjeta.sin-imagen .comunicado-cuerpo{padding:20px}.inicio-shell .comunicado-meta{align-items:flex-start}}

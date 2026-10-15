@@ -1,0 +1,67 @@
+#encuestas-instructor-admin .encuesta-configuracion { margin: 20px 0 28px; padding: 20px; border: 1px solid #dce3e8; border-radius: 12px; background: #f8fafb; }
+#encuestas-instructor-admin summary { cursor: pointer; font-size: 1.1rem; font-weight: 700; }
+#encuestas-instructor-admin fieldset { border: 0; padding: 0; min-width: 0; }
+#encuestas-instructor-admin fieldset > legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+#encuestas-instructor-admin .encuesta-config-pregunta { padding: 14px 0; border-bottom: 1px solid #dce3e8; }
+#encuestas-instructor-admin .encuesta-config-seccion { margin: 22px 0 4px; padding-bottom: 8px; border-bottom: 1px solid #dce3e8; color: #304760; font-size: 1rem; }
+#encuestas-instructor-admin .encuesta-config-pregunta label { display: block; font-weight: 600; margin-bottom: 8px; }
+#encuestas-instructor-admin textarea { display: block; width: 100%; box-sizing: border-box; resize: vertical; padding: 10px; border: 1px solid #aab7c2; border-radius: 8px; font: inherit; }
+#encuestas-instructor-admin .encuesta-config-acciones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+#encuestas-instructor-admin #lista-encuestas-instructor { display: grid; gap: 16px; margin-top: 16px; }
+#encuestas-instructor-admin #estado-preguntas-instructor { margin-top: 12px; }
+
+.encuesta-respuestas-modal { width: min(680px, calc(100vw - 32px)); max-height: 85vh; box-sizing: border-box; padding: 24px; border: 1px solid #dce3e8; border-radius: 14px; color: #263238; overflow: auto; }
+.encuesta-respuestas-modal::backdrop { background: rgb(0 0 0 / 50%); }
+.encuesta-respuestas-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.encuesta-respuestas-modal h2 { margin: 0; }
+.encuesta-respuestas-modal li { padding: 12px 0; border-bottom: 1px solid #dce3e8; overflow-wrap: anywhere; }
+.encuesta-respuestas-modal .encuesta-comentario { white-space: pre-wrap; overflow-wrap: anywhere; }
+#encuestas-instructor-admin .encuesta-config-pregunta > button { margin-top: 8px; }
+
+#encuestas-instructor-admin .encuesta-respuestas-panel { padding: 24px; background: #fff; border: 1px solid #dce3e8; border-radius: 16px; box-shadow: 0 4px 18px rgb(30 50 65 / 6%); }
+#encuestas-instructor-admin .encuesta-respuestas-panel > h3 { margin: 0 0 16px; }
+#encuestas-instructor-admin #actualizar-encuestas-instructor { margin-top: 12px; }
+#encuestas-instructor-admin #lista-encuestas-instructor { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+#encuestas-instructor-admin .encuesta-respuesta-tarjeta { display: flex; flex-direction: column; align-items: start; padding: 22px; border: 1px solid #dce3e8; border-radius: 12px; background: #f8fafb; overflow-wrap: anywhere; }
+#encuestas-instructor-admin .encuesta-respuesta-etiqueta { color: #607080; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+#encuestas-instructor-admin .encuesta-respuesta-tarjeta h4 { font-size: 20px; margin: 10px 0 6px; }
+#encuestas-instructor-admin .encuesta-respuesta-curso { margin: 0; }
+#encuestas-instructor-admin .encuesta-respuesta-tarjeta button { margin-top: auto; }
+#encuestas-instructor-admin .encuesta-respuesta-tarjeta dl, .encuesta-respuestas-modal dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; width: 100%; margin: 18px 0; }
+#encuestas-instructor-admin .encuesta-respuesta-tarjeta dt, .encuesta-respuestas-modal dt { color: #607080; font-size: 13px; margin-bottom: 4px; }
+#encuestas-instructor-admin .encuesta-respuesta-tarjeta dd, .encuesta-respuestas-modal dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+#encuestas-instructor-admin .encuesta-respuestas-vacias { grid-column: 1 / -1; text-align: center; padding: 32px 16px; background: #f8fafb; border: 1px dashed #ccd6df; border-radius: 12px; }
+.encuesta-respuestas-modal .encuesta-datos-trabajador { background: #f3f6f8; padding: 18px; border-radius: 10px; margin: 20px 0; }
+.encuesta-respuestas-modal .encuesta-datos-trabajador h3 { margin-top: 0; overflow-wrap: anywhere; }
+.encuesta-respuestas-modal .encuesta-comentario { padding: 16px; border-radius: 10px; background: #f3f6f8; }
+@media (max-width: 480px) {
+  #encuestas-instructor-admin .encuesta-respuestas-panel { padding: 16px; }
+  .encuesta-respuestas-modal dl { grid-template-columns: 1fr; }
+}
+
+#encuestas-instructor-admin .encuesta-configuracion h3 { margin-top: 0; }
+#encuestas-instructor-admin .encuesta-preguntas-modal { width: min(760px, calc(100vw - 32px)); max-height: 85vh; margin: auto; padding: 24px; box-sizing: border-box; border: 1px solid #dce3e8; border-radius: 16px; background: #fff; color: #263238; overflow: auto; }
+#encuestas-instructor-admin .encuesta-preguntas-modal::backdrop { background: rgb(0 0 0 / 50%); }
+#encuestas-instructor-admin .encuesta-preguntas-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+#encuestas-instructor-admin .encuesta-preguntas-modal h2 { margin: 0; font-size: 22px; }
+@media (max-width: 480px) {
+  #encuestas-instructor-admin .encuesta-preguntas-modal { padding: 16px; }
+  #encuestas-instructor-admin .encuesta-preguntas-modal .encuesta-config-acciones { flex-direction: column; }
+}
+
+#encuestas-instructor-admin .encuesta-listado-modal { width: min(1040px, calc(100vw - 32px)); max-height: 85vh; margin: auto; padding: 24px; box-sizing: border-box; border: 1px solid #dce3e8; border-radius: 16px; background: #fff; color: #263238; overflow: auto; }
+#encuestas-instructor-admin .encuesta-listado-modal::backdrop { background: rgb(0 0 0 / 50%); }
+#encuestas-instructor-admin .encuesta-listado-modal header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+#encuestas-instructor-admin .encuesta-listado-modal h2 { margin: 0; font-size: 22px; }
+@media (max-width: 480px) { #encuestas-instructor-admin .encuesta-listado-modal { padding: 16px; } }
+
+/* Accesos compactos a la evaluación */
+#encuestas-instructor-admin>h2{font-size:21px;margin-bottom:10px}
+#encuestas-instructor-admin>p{font-size:13px;line-height:1.6;color:#65748a;margin-bottom:18px}
+#encuestas-instructor-admin .encuesta-accesos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#encuestas-instructor-admin .encuesta-accesos>.encuesta-configuracion,#encuestas-instructor-admin .encuesta-accesos>.encuesta-respuestas-panel{display:flex;flex-direction:column;align-items:flex-start;margin:0;padding:20px;border:1px solid #e1e7ee;border-radius:12px;background:#f8fafc;box-shadow:none}
+#encuestas-instructor-admin .encuesta-accesos>div>h3{font-size:16px;line-height:1.4;color:#2c4058;margin:0 0 8px}
+#encuestas-instructor-admin .encuesta-accesos>div>p{font-size:13px;line-height:1.5;color:#718096;margin:0 0 18px}
+#encuestas-instructor-admin .encuesta-accesos>div>.btn{margin-top:auto;min-height:38px;font-size:12px;padding:9px 14px;box-shadow:none;border-radius:8px}
+#encuestas-instructor-admin .encuesta-accesos>div>button:focus-visible{outline:3px solid #426b9e;outline-offset:3px}
+@media(max-width:700px){#encuestas-instructor-admin .encuesta-accesos{grid-template-columns:1fr}}

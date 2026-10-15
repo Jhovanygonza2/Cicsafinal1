@@ -1,0 +1,9 @@
+.encuesta-instructor { margin: 24px 0; padding: 24px; text-align: left; }
+.encuesta-instructor fieldset { border: 1px solid #ccd4da; border-radius: 8px; padding: 12px; margin: 16px 0; }
+.encuesta-instructor legend { font-weight: 600; padding: 0 6px; }
+.encuesta-opciones { display: flex; flex-wrap: wrap; gap: 12px; }
+.encuesta-opciones label { display: flex; align-items: center; gap: 8px; padding: 10px; cursor: pointer; }
+.encuesta-instructor textarea { display: block; width: 100%; box-sizing: border-box; margin: 8px 0; }
+.encuesta-instructor [role="alert"] { color: #a51d26; }
+
+.encuesta-instructor .encuesta-seccion{margin:26px 0 14px;padding-bottom:9px;border-bottom:1px solid #e1e7ef;font-size:16px;color:#304760}

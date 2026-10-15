@@ -1,0 +1,94 @@
+/* Seguimiento y ficha personal del panel del instructor. */
+.panel-instructor #mis-solicitudes-cursos,.panel-instructor #instructores-admin{padding:30px;border:1px solid #dce4eb;border-radius:20px;box-shadow:0 6px 22px rgba(32,52,65,.035);background:#fff}
+.panel-instructor .instructor-seccion-etiqueta{display:block;color:#a7232a;font-size:11px;font-weight:800;letter-spacing:1.5px;margin-bottom:8px}
+.panel-instructor #mis-solicitudes-cursos h2,.panel-instructor #instructores-titulo{padding:0;margin:0 0 10px;border:0;font-size:26px;letter-spacing:-.6px;color:#213743}
+.panel-instructor #mis-solicitudes-cursos h2::before,.panel-instructor #instructores-titulo::before{display:none}
+.panel-instructor #mis-solicitudes-cursos>.muted,.panel-instructor .catalogo-cabecera p{margin:0;color:#5d7080;line-height:1.6;font-size:14px}
+.panel-instructor #mis-solicitudes-cursos .tabla-admin-wrap{margin-top:24px;border:1px solid #e0e7ed;border-radius:14px;box-shadow:none}
+.panel-instructor #mis-solicitudes-cursos table{width:100%;border-collapse:collapse}
+.panel-instructor #mis-solicitudes-cursos th{background:#f3f6f8;color:#5b6d7c;padding:15px 18px;font-size:11px;letter-spacing:.7px;text-transform:uppercase;border-bottom:1px solid #e0e7ed;text-align:left}
+.panel-instructor #mis-solicitudes-cursos td{padding:20px 18px;color:#4b6070;font-size:14px;line-height:1.6;border-bottom:1px solid #e9edf1;vertical-align:middle}
+.panel-instructor #mis-solicitudes-cursos tr:last-child td{border-bottom:0}
+.panel-instructor #mis-solicitudes-cursos tbody tr:hover{background:#fafbfd}
+.panel-instructor .solicitud-curso-nombre{color:#233e4c;font-size:15px;font-weight:650;overflow-wrap:anywhere}
+.panel-instructor .solicitud-estado{display:inline-flex;align-items:center;gap:8px;border-radius:99px;padding:6px 11px;font-size:12px;font-weight:700;line-height:1.5;background:#edf1f5;color:#526473}
+.panel-instructor .solicitud-estado::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.panel-instructor .solicitud-estado-aprobado{background:#e8f5ee;color:#196846}
+.panel-instructor .solicitud-estado-pendiente{background:#fff4dc;color:#805b0e}
+.panel-instructor .solicitud-estado-cambios{background:#fff0ec;color:#a03925}
+.panel-instructor #instructores-admin .catalogo-cabecera{align-items:center;gap:24px;padding-bottom:24px;margin-bottom:0;border-bottom:1px solid #e4eaf0}
+.panel-instructor #ficha-nueva{border-radius:10px;min-height:44px;padding:12px 20px;white-space:nowrap;box-shadow:none}
+.panel-instructor #ficha-estado:empty{display:none}
+.panel-instructor .instructor-identidad{display:flex;align-items:center;gap:16px;padding:26px 0}
+.panel-instructor .instructor-avatar{display:grid;place-items:center;width:60px;height:60px;flex-shrink:0;border-radius:18px;background:#fbecee;color:#ae242c;font-size:21px;font-weight:800;border:1px solid #f2d9dc}
+.panel-instructor .instructor-identidad h3{margin:0 0 5px;font-size:20px;line-height:1.4;color:#233e4c;overflow-wrap:anywhere}
+.panel-instructor .instructor-identidad p{margin:0;color:#617484;font-size:13px}
+.panel-instructor .instructor-identidad>.catalogo-estado{margin-left:auto;flex-shrink:0}
+.panel-instructor .instructor-datos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0}
+.panel-instructor .instructor-datos>div{padding:18px 20px;border:1px solid #e2e9ef;border-radius:12px;background:#f8fafb}
+.panel-instructor .instructor-datos dt{margin-bottom:9px;color:#627685;font-size:12px;font-weight:600}
+.panel-instructor .instructor-datos dd{margin:0;color:#243e4d;font-size:15px;font-weight:650;overflow-wrap:anywhere}
+.panel-instructor .instructor-datos dd.instructor-dato-pendiente{color:#7b642e;font-weight:500}
+.panel-instructor #ficha-nueva:focus-visible{outline:3px solid #345f89;outline-offset:3px}
+@media(max-width:700px){
+ .panel-instructor #mis-solicitudes-cursos,.panel-instructor #instructores-admin{padding:20px;border-radius:16px}
+ .panel-instructor #instructores-admin .catalogo-cabecera{flex-direction:column;align-items:flex-start;gap:16px}
+ .panel-instructor .instructor-datos{grid-template-columns:1fr}
+ .panel-instructor .instructor-identidad{flex-wrap:wrap}
+ .panel-instructor .instructor-identidad>div{flex:1;min-width:150px}
+ .panel-instructor .instructor-identidad>.catalogo-estado{margin-left:0}
+ .panel-instructor #mis-solicitudes-cursos table{min-width:0}
+ .panel-instructor #mis-solicitudes-cursos thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .panel-instructor #mis-solicitudes-cursos tbody,.panel-instructor #mis-solicitudes-cursos tr,.panel-instructor #mis-solicitudes-cursos td{display:block;width:auto}
+ .panel-instructor #mis-solicitudes-cursos tr{padding:12px 16px;border-bottom:1px solid #e0e7ed}
+ .panel-instructor #mis-solicitudes-cursos tr:last-child{border-bottom:0}
+ .panel-instructor #mis-solicitudes-cursos td{padding:8px 0;border:0;white-space:normal}
+ .panel-instructor #mis-solicitudes-cursos td[data-label]::before{content:attr(data-label);display:block;margin-bottom:3px;font-size:11px;font-weight:700;color:#617484}
+}
+
+/* Edicion de la ficha del instructor. */
+.panel-instructor #ficha-modal{width:min(800px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #dce4eb;border-radius:22px;box-shadow:0 28px 90px rgba(15,32,46,.24);overflow:auto;color:#243e4d}
+.panel-instructor #ficha-modal::backdrop{background:rgba(20,34,46,.58);backdrop-filter:blur(3px)}
+.panel-instructor .ficha-dialogo-cabecera{padding:28px 32px 24px;border-bottom:1px solid #e3e9ef;background:#f8fafb}
+.panel-instructor #ficha-modal h3{margin:0 40px 8px 0;padding:0;border:0;font-size:25px;line-height:1.3;letter-spacing:-.5px;color:#243e4d}
+.panel-instructor .ficha-dialogo-cabecera p{margin:0;color:#5c7181;font-size:14px;line-height:1.6}
+.panel-instructor #ficha-cerrar{top:20px;right:20px;width:36px;height:36px;display:grid;place-items:center;border-radius:10px;color:#526778;font-size:25px;line-height:1;background:#fff;border:1px solid #dce4eb}
+.panel-instructor #ficha-cerrar:hover{background:#edf2f5}
+.panel-instructor .ficha-dialogo-cuerpo{padding:26px 32px}
+.panel-instructor .ficha-datos-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.panel-instructor .ficha-cuenta-completa{grid-column:1/-1}
+.panel-instructor #ficha-modal .campo{min-width:0;margin:0;display:block}
+.panel-instructor #ficha-modal .campo label{display:block;margin:0 0 8px;font-size:13px;color:#304c5d;font-weight:650;line-height:1.5}
+.panel-instructor #ficha-modal input,.panel-instructor #ficha-modal select{width:100%;min-width:0;box-sizing:border-box;min-height:46px;margin:0;border:1px solid #cbd7e0;border-radius:10px;background:#fff;padding:11px 13px;color:#243e4d;font-size:14px;box-shadow:none}
+.panel-instructor #ficha-modal select:disabled{background:#eef3f6;color:#506777;opacity:1}
+.panel-instructor #ficha-modal input::placeholder{color:#728594}
+.panel-instructor #ficha-modal :is(input,select,button):focus-visible{outline:3px solid #a8c4dc;outline-offset:2px;border-color:#436f91}
+.panel-instructor #ficha-modal small{display:block;margin-top:8px;color:#627887;font-size:12px;line-height:1.6}
+.panel-instructor .ficha-firma-panel{margin-top:26px;padding:20px;border:1px solid #dce5ec;border-radius:14px;background:#f8fafb}
+.panel-instructor .ficha-firma-encabezado{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.panel-instructor .ficha-firma-encabezado h4{margin:0 0 5px;color:#243e4d;font-size:16px}
+.panel-instructor .ficha-firma-encabezado p{margin:0;color:#627887;font-size:12px;line-height:1.6}
+.panel-instructor .ficha-formato{padding:5px 8px;border:1px solid #dee6ec;border-radius:6px;background:#fff;color:#627887;font-size:10px;white-space:nowrap}
+.panel-instructor .ficha-firma-contenido{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:20px;align-items:center}
+.panel-instructor #ficha-firma{font-size:12px;padding:8px;min-height:46px}
+.panel-instructor #ficha-firma::file-selector-button{border:0;border-radius:6px;background:#eaf0f5;color:#304c5d;padding:8px 10px;margin-right:8px;font-weight:600;cursor:pointer}
+.panel-instructor .ficha-firma-vista{min-height:120px;border:1px dashed #bccdd9;border-radius:10px;background:#fff;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;padding:14px;box-sizing:border-box}
+.panel-instructor #ficha-sin-firma{max-width:190px;text-align:center;font-size:12px;line-height:1.7;color:#627887}
+.panel-instructor #ficha-previa{max-width:100%;width:auto;max-height:90px;object-fit:contain}
+.panel-instructor #ficha-quitar{padding:6px 10px;min-height:32px;font-size:12px;color:#af252c}
+.panel-instructor #ficha-modal-estado{margin:16px 0 0;font-size:13px;line-height:1.6;color:#a32931}
+.panel-instructor #ficha-modal-estado:empty{margin:0}
+.panel-instructor .ficha-dialogo-acciones{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 32px;border-top:1px solid #e3e9ef;background:#fff}
+.panel-instructor .ficha-dialogo-acciones>p{margin:0;max-width:230px;font-size:12px;line-height:1.6;color:#627887}
+.panel-instructor .ficha-dialogo-acciones>div{display:flex;gap:10px}
+.panel-instructor .ficha-dialogo-acciones .btn{min-height:44px;padding:11px 18px;border-radius:10px;white-space:nowrap;font-size:14px;box-shadow:none}
+@media(max-width:600px){
+ .panel-instructor #ficha-modal{width:calc(100vw - 20px);max-height:calc(100dvh - 20px);border-radius:16px}
+ .panel-instructor .ficha-dialogo-cabecera{padding:24px 20px 20px}
+ .panel-instructor .ficha-dialogo-cuerpo{padding:22px 20px}
+ .panel-instructor .ficha-datos-grid,.panel-instructor .ficha-firma-contenido{grid-template-columns:1fr}
+ .panel-instructor .ficha-formato{display:none}
+ .panel-instructor .ficha-dialogo-acciones{padding:18px 20px;flex-direction:column;align-items:stretch;gap:12px}
+ .panel-instructor .ficha-dialogo-acciones>p{max-width:none}
+ .panel-instructor .ficha-dialogo-acciones>div>.btn{flex:1;padding:11px 12px}
+}

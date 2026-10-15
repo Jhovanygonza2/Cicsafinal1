@@ -1,0 +1,56 @@
+const fs = require('fs'), vm = require('vm'), assert = require('assert/strict');
+const source = fs.readFileSync('js/api.js', 'utf8');
+const names = ['Seguridad e Higiene Industrial', 'Atenci\u00f3n al Cliente', 'Uso de Sistemas Internos', 'Soldador Industrial', 'Prevenci\u00f3n y control de incendios'];
+async function open(data = new Map(), realBackend = false) {
+  const localStorage = {getItem:k=>data.get(k)??null, setItem:(k,v)=>data.set(k,String(v)), removeItem:k=>data.delete(k), key:i=>[...data.keys()][i], get length(){return data.size;}};
+  const context = vm.createContext({localStorage, console, setTimeout:f=>f(), URLSearchParams, window:{location:{pathname:'/index.html',replace(){}},addEventListener(){}}});
+  vm.runInContext((realBackend ? source.replace('const MOCK_MODE = true', 'const MOCK_MODE = false') : source) + '\nthis.app={DB,dbListaPromise,auth,sesion,cursos};', context);
+  await context.app.dbListaPromise;
+  return {app:context.app,data,context};
+}
+const put = (data,k,v) => data.set(k,JSON.stringify(v));
+const read = (data,k) => JSON.parse(data.get(k));
+(async () => {
+  let fresh = await open();
+  assert.equal(fresh.app.DB.cursos.length,0);
+  assert.deepEqual(read(fresh.data,'cicsa_evaluaciones'),{});
+  assert.equal((await open(fresh.data)).app.DB.cursos.length,0);
+  const login = await fresh.app.auth.login('jche','123456');
+  fresh.app.sesion.guardar(login.token,login.usuario);
+  const created = await fresh.app.cursos.crear({nombre:'Curso propio',modulos:[]});
+  assert.equal((await open(fresh.data)).app.DB.cursos[0].nombre,created.nombre);
+  const data = new Map([['cicsa_limpieza_usuarios','cuentas-demo-v1'],['cicsa_horario_global','v1']]);
+  const real = {id:40,nombre:'Curso real',estado:'pendiente',modulos:[]};
+  const demo = names.map((nombre,i)=>({id:i+1,nombre,modulos:[]}));
+  const tester = {id:60,nombre:'[TEST] Uso de la plataforma - publicado',descripcion:'Contenido ficticio para probar navegaci\u00f3n, avance, evaluaciones y revisi\u00f3n de cursos.',modulos:[]};
+  put(data,'cicsa_cursos',[...demo,tester,real]);
+  put(data,'cicsa_progreso',{99:{1:{porcentaje:20},5:{porcentaje:100},60:{porcentaje:100},40:{porcentaje:50}}});
+  put(data,'cicsa_evaluaciones',{1:{},5:{},60:{},40:{preguntas:[]}});
+  const keys = ['cicsa_evaluaciones_resultado','cicsa_notificaciones_admin','cicsa_constancias_emitidas','cicsa_encuestas_instructor','cicsa_insignias_otorgadas','cicsa_soporte'];
+  for(const k of keys) put(data,k,[{cursoId:5},{cursoId:60},{curso:names[0]},{cursoId:40},{tipo:'general'}]);
+  data.set('cicsa_consumo_v1_99_5_9_hash','demo');data.set('cicsa_consumo_v1_99_40_9_hash','real');
+  let result = await open(data);
+  assert.deepEqual(read(data,'cicsa_cursos'),[real]);
+  assert.deepEqual(read(data,'cicsa_progreso'),{99:{40:{porcentaje:50}}});
+  assert.deepEqual(Object.keys(read(data,'cicsa_evaluaciones')),['40']);
+  for(const k of keys) assert.deepEqual(read(data,k),k === 'cicsa_evaluaciones_resultado' ? [{cursoId:40,tipo:'examen'},{tipo:'examen'}] : [{cursoId:40},{tipo:'general'}],k);
+  assert.equal(data.has('cicsa_consumo_v1_99_5_9_hash'),false);
+  assert.equal(data.get('cicsa_consumo_v1_99_40_9_hash'),'real');
+  const snapshot=JSON.stringify([...data]);await open(data);assert.equal(JSON.stringify([...data]),snapshot);
+  // Real courses reusing a sample ID or name must survive, even without the old catalog marker.
+  const collision = new Map([['cicsa_limpieza_usuarios','cuentas-demo-v1'],['cicsa_horario_global','v1']]);
+  const own = [{id:5,nombre:'Personalizado',modulos:[]},{id:88,nombre:names[1],modulos:[]}];
+  put(collision,'cicsa_cursos',own);put(collision,'cicsa_progreso',{99:{5:{porcentaje:10}}});
+  put(collision,'cicsa_evaluaciones',{5:{preguntas:['propia']}});
+  put(collision,'cicsa_evaluaciones_resultado',[{cursoId:5},{curso:names[1]}]);
+  await open(collision);
+  assert.deepEqual(read(collision,'cicsa_cursos'),own);
+  assert.deepEqual(read(collision,'cicsa_progreso'),{99:{5:{porcentaje:10}}});
+  assert.deepEqual(read(collision,'cicsa_evaluaciones'),{5:{preguntas:['propia']}});
+  assert.equal(read(collision,'cicsa_evaluaciones_resultado').length,2);
+  vm.runInContext(fs.readFileSync('js/datos-tester.js','utf8')+'\nthis.loadTester=cargarDatosTester;',result.context);
+  await assert.rejects(result.context.loadTester(),/deshabilitada/);
+  const backend = new Map();put(backend,'cicsa_cursos',demo);
+  await open(backend,true);assert.equal(read(backend,'cicsa_cursos').length,5);assert.equal(backend.has('cicsa_limpieza_cursos_demo'),false);
+  console.log('OK: instalacion nueva, limpieza, datos vinculados, persistencia, cursos reales, creacion, tester deshabilitado y backend.');
+})().catch(e=>{console.error(e);process.exitCode=1;});

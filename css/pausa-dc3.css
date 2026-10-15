@@ -1,0 +1,9 @@
+/* Oculta controles y vistas de DC-3 sin alterar sus scripts ni sus datos. */
+.dc3-modal,
+.dc3-selector,
+#perfil-trabajador-clave-dc3,
+label:has(#nu-clave-dc3),
+#contenedor-certificados > button,
+.constancias-filtro-historial {
+  display: none !important;
+}

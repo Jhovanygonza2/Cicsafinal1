@@ -1,0 +1,22 @@
+.cuenta-menu { position:relative; flex-shrink:0; color:#253746; }
+.cuenta-disparador { display:flex; align-items:center; gap:9px; min-height:44px; padding:4px 10px 4px 5px; border:1px solid #d9e1e7; border-radius:24px; background:#fff; cursor:pointer; list-style:none; font-size:14px; font-weight:600; }
+.cuenta-disparador::-webkit-details-marker { display:none; }
+.cuenta-disparador:hover,.cuenta-menu[open] .cuenta-disparador { background:#f4f6f8; border-color:#b6c3ce; }
+.cuenta-disparador:focus-visible,.cuenta-opcion:focus-visible { outline:3px solid #bd2229; outline-offset:3px; }
+.cuenta-avatar { display:grid; place-items:center; width:34px; height:34px; flex-shrink:0; border-radius:50%; background:#fbeaec; color:#a81e28; font-size:12px; font-weight:800; }
+.cuenta-nombre-corto { max-width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cuenta-disparador svg,.cuenta-opcion svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.cuenta-menu[open] .cuenta-disparador>svg { transform:rotate(180deg); }
+.cuenta-panel { position:absolute; right:0; top:calc(100% + 12px); z-index:120; width:280px; max-width:calc(100vw - 32px); box-sizing:border-box; padding:8px; background:#fff; border:1px solid #e0e6ea; border-radius:16px; box-shadow:0 14px 40px #182b4026; max-height:calc(100dvh - 100px); overflow-y:auto; }
+.cuenta-identidad { display:flex; flex-direction:column; align-items:flex-start; gap:6px; padding:12px; margin-bottom:6px; overflow-wrap:anywhere; }
+.cuenta-identidad strong { font-size:16px; }
+.cuenta-etiqueta { color:#6a7885; font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+.cuenta-correo { color:#657381; font-size:13px; }
+.cuenta-identidad .badge-rol-admin { display:inline-flex; margin-top:4px; white-space:normal; }
+.cuenta-opcion { display:flex; align-items:center; gap:10px; width:100%; box-sizing:border-box; border:0; border-radius:8px; background:transparent; padding:12px; color:#253746; text-align:left; text-decoration:none; font:inherit; font-size:14px; cursor:pointer; }
+.cuenta-opcion:hover { background:#f2f5f7; }
+.cuenta-pie { border-top:1px solid #e5e9ed; margin-top:6px; padding-top:6px; }
+.cuenta-salir { color:#ae2029; font-weight:600; }
+.cuenta-salir:hover { background:#fff0f1; }
+@media(max-width:480px) { .cuenta-nombre-corto { display:none; } .cuenta-disparador { gap:4px; padding-right:7px; } }
+

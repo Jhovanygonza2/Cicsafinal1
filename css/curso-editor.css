@@ -1,0 +1,117 @@
+/* Editor compartido de cursos: distribución y jerarquía visual. */
+#form-curso { --editor-borde: #dce3e9; --editor-texto: #263746; --editor-muted: #5e6e7c; gap: 20px; }
+#form-curso .curso-editor-seccion { padding: 28px; border-color: var(--editor-borde); border-radius: 18px; box-shadow: 0 4px 20px #23334506; }
+#form-curso .curso-editor-seccion-titulo { padding-bottom: 20px; margin-bottom: 24px; border-bottom: 1px solid #edf0f3; }
+#form-curso .curso-editor-seccion-titulo h4 { font-size: 20px; letter-spacing: -.4px; }
+#form-curso .curso-editor-seccion-titulo p { margin: 5px 0 0; font-size: 14px; }
+#form-curso .curso-editor-numero { width: 40px; height: 40px; border-radius: 12px; color: #b42328; background: #fcebec; font-size: 14px; }
+#form-curso .curso-editor-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-areas: none; gap: 22px 20px; align-items: start; }
+#form-curso .curso-editor-grid > .campo { grid-area: auto; grid-column: span 2; min-width: 0; margin: 0; }
+#form-curso .curso-editor-grid > .campo:has(#nc-nombre) { grid-column: span 4; }
+#form-curso .curso-editor-grid > .curso-editor-descripcion { grid-column: 1 / -1; }
+#form-curso .curso-editor-grid > .curso-editor-asignacion,
+#form-curso .curso-editor-grid > .campo:has(input[type="datetime-local"]) { grid-column: span 3; }
+#form-curso .campo > label { display: block; margin-bottom: 8px; color: var(--editor-texto); font-size: 14px; font-weight: 650; }
+#form-curso .campo > small { display: block; margin-top: 7px; color: var(--editor-muted); font-size: 12px; line-height: 1.6; }
+#form-curso :is(input:not([type="hidden"]):not([type="checkbox"]), select, textarea) { box-sizing: border-box; max-width: 100%; min-width: 0; border: 1px solid #cdd7e0; border-radius: 10px; background: #fff; color: var(--editor-texto); font: inherit; font-size: 14px; padding: 12px 14px; }
+#form-curso .campo > :is(input, select, textarea) { width: 100%; min-height: 46px; }
+#form-curso textarea { min-height: 104px; line-height: 1.6; }
+#form-curso :is(input, textarea)::placeholder { color: #72808e; opacity: 1; }
+#form-curso :is(input, select, textarea):focus { outline: 2px solid #b42328; outline-offset: 2px; border-color: #b42328; }
+#form-curso button:focus-visible { outline: 2px solid #b42328; outline-offset: 3px; }
+#form-curso .curso-contenido-abrir { width: 100%; min-height: 54px; padding: 15px 20px; text-align: left; border: 1px solid #e6c8cb; border-radius: 12px; background: #fff8f8; color: #a51f26; font-weight: 700; }
+#form-curso .curso-contenido-modal { padding: 24px; }
+#form-curso .curso-contenido-card { width: min(1160px, 100%); max-height: 90dvh; padding: 28px; gap: 24px; background: #f5f7fa; scrollbar-gutter: stable; scroll-padding: 24px; }
+#form-curso .curso-contenido-card-cabecera { padding: 0 48px 22px 0; gap: 16px; }
+#form-curso .curso-contenido-card-cabecera h4 { font-size: 23px; letter-spacing: -.5px; }
+#form-curso .curso-contenido-card-cabecera p { font-size: 14px; line-height: 1.6; color: var(--editor-muted); }
+#form-curso .curso-contenido-card-ayuda { background: #e8edf2; color: #465b6c; font-size: 10px; }
+#form-curso .curso-contenido-cerrar { width: 36px; height: 36px; top: 24px; right: 22px; }
+#form-curso .curso-contenido-bloque { padding: 22px; border: 1px solid var(--editor-borde); border-radius: 14px; background: #fff; gap: 20px; }
+#form-curso .curso-contenido-bloque-titulo strong { font-size: 17px; }
+#form-curso .curso-contenido-bloque-titulo span { color: var(--editor-muted); font-size: 12px; }
+#form-curso .curso-media-grid { gap: 18px; }
+#form-curso :is(.curso-media-field, .editor-media-nivel-campo) { min-width: 0; }
+#form-curso :is(.curso-media-field, .editor-media-nivel-campo) > label { color: #435464; font-size: 13px; font-weight: 650; margin-bottom: 9px; }
+#form-curso input[type="file"] { width: 100%; padding: 8px; background: #fff; font-size: 12px; color: #5e6e7c; }
+#form-curso input[type="file"]::file-selector-button { padding: 9px 12px; margin-right: 10px; border: 0; border-radius: 7px; background: #edf1f5; color: #334859; font: inherit; font-weight: 650; cursor: pointer; }
+#form-curso input[type="file"]::file-selector-button:hover { background: #dfe7ee; }
+#form-curso :is(.curso-media-preview, .editor-media-nivel-preview) { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 76px; margin-top: 10px; padding: 12px; border: 1px dashed #cbd6df; border-radius: 10px; background: #f8fafc; color: #617282; font-size: 12px; overflow-wrap: anywhere; }
+#form-curso :is(.curso-media-preview, .editor-media-nivel-preview).tiene-archivo { justify-content: flex-start; border-style: solid; background: #f3f8f5; border-color: #c5d9cd; color: #365e46; }
+#form-curso :is(.curso-media-preview, .editor-media-nivel-preview) :is(img, video) { width: 110px; max-width: 45%; height: 72px; margin: 0; object-fit: contain; border-radius: 6px; }
+#form-curso #constructor-modulos:empty::before { content: "Empieza con el primer tema de tu curso. Dentro podrás agregar unidades y subtemas."; display: block; padding: 28px 20px; border: 1px dashed #cbd6df; border-radius: 12px; background: #f8fafc; color: #617282; text-align: center; font-size: 14px; line-height: 1.7; }
+#form-curso .editor-modulo { margin: 0 0 20px; border: 1px solid #cdd7e0; border-top: 3px solid #354c60; border-radius: 12px; background: #fff; box-shadow: 0 3px 12px #23334506; }
+#form-curso .editor-modulo-cabecera { padding: 16px; gap: 12px; border-bottom: 1px solid #e4eaf0; background: #f0f4f8; }
+#form-curso .editor-modulo-toggle { flex-shrink: 0; width: 36px; height: 36px; background: #fff; border: 1px solid #d4dde6; }
+#form-curso .editor-modulo-indice { color: #4b6072; font-size: 12px; letter-spacing: 0; white-space: nowrap; }
+#form-curso :is(.editor-modulo-contador, .editor-tema-contador) { padding: 5px 9px; border-radius: 20px; background: #e7edf2; color: #526577; font-size: 11px; }
+#form-curso .editor-media-nivel { margin: 16px; padding: 0; border: 0; gap: 16px; background: transparent; }
+#form-curso .editor-modulo.colapsado > .editor-media-nivel { display: none; }
+#form-curso .editor-temas { margin: 0 16px; }
+#form-curso .editor-tema { padding: 14px; margin: 0 0 16px; border: 1px solid #e0e5eb; border-left: 3px solid #c52a30; border-radius: 10px; background: #fafbfc; }
+#form-curso .editor-tema-cabecera { padding: 0 0 14px; gap: 10px; }
+#form-curso .editor-tema > .editor-media-nivel { margin: 0 0 18px; }
+#form-curso .editor-subtemas { margin: 0; }
+#form-curso .editor-subtema { position: relative; display: block; padding: 18px; margin-bottom: 12px; border: 1px solid #dfe5eb; border-radius: 10px; background: #fff; }
+#form-curso .editor-subtema-campos { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+#form-curso .editor-subtema-campos > label:first-child { padding-right: 80px; min-height: 28px; display: flex; align-items: center; }
+#form-curso .editor-subtema > .editor-eliminar { position: absolute; right: 12px; top: 12px; }
+#form-curso .editor-eliminar { min-height: 34px; padding: 7px 10px; color: #b42328; font-size: 12px; border-radius: 7px; }
+#form-curso .editor-eliminar:hover { background: #fcebec; }
+#form-curso .editor-subtema-tipo-grupo { display: flex; flex-wrap: wrap; width: fit-content; max-width: 100%; padding: 4px; gap: 4px; border: 1px solid #e1e6ec; border-radius: 10px; background: #f3f5f8; }
+#form-curso .editor-subtema-tipo-boton { min-height: 36px; padding: 8px 14px; border-radius: 7px; color: #526577; font-size: 12px; }
+#form-curso .editor-subtema-tipo-boton.activo { background: #b42328; color: #fff; box-shadow: 0 2px 4px #951c2420; }
+#form-curso :is([data-agregar-tema], [data-agregar-subtema], #btn-agregar-modulo) { min-height: 42px; padding: 10px 16px; border: 1px dashed #bfcbd6; border-radius: 9px; background: #fff; color: #40576b; font-size: 13px; font-weight: 650; box-shadow: none; }
+#form-curso [data-agregar-tema] { margin: 0 16px 16px; }
+#form-curso #btn-agregar-modulo { width: 100%; background: #f7f9fb; }
+#form-curso :is([data-agregar-tema], [data-agregar-subtema], #btn-agregar-modulo):hover { border-color: #b42328; color: #b42328; background: #fff8f8; }
+#form-curso .curso-evaluaciones-estructura { display: grid; gap: 12px; padding-top: 20px; border-top: 1px solid #e6ebf0; }
+#form-curso .curso-evaluacion-config { padding: 20px; gap: 18px; border-radius: 12px; }
+#form-curso .curso-evaluacion-config strong { font-size: 15px; }
+#form-curso .curso-evaluacion-config span { font-size: 12px; line-height: 1.6; }
+#form-curso .curso-editor-acciones { padding: 16px 20px; border-color: var(--editor-borde); box-shadow: none; }
+@media (max-width: 900px) {
+  #form-curso .curso-editor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #form-curso .curso-editor-grid > .campo { grid-column: span 1; }
+  #form-curso .curso-editor-grid > :is(.curso-editor-descripcion, .curso-editor-asignacion, .campo:has(#nc-nombre)) { grid-column: 1 / -1; }
+  #form-curso .curso-editor-grid > .campo:has(input[type="datetime-local"]) { grid-column: span 1; }
+  #form-curso .curso-contenido-card-ayuda { display: none; }
+  #form-curso :is(.editor-modulo-cabecera, .editor-tema-cabecera) { flex-wrap: wrap; }
+  #form-curso :is(.editor-modulo-cabecera, .editor-tema-cabecera) > input { flex-basis: 60%; }
+}
+@media (max-width: 600px) {
+  #form-curso .curso-editor-seccion { padding: 18px; }
+  #form-curso .curso-editor-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  #form-curso .curso-editor-grid > .campo { grid-column: 1 / -1; }
+  #form-curso .curso-contenido-modal { padding: 8px; }
+  #form-curso .curso-contenido-card { padding: 18px 12px; max-height: 95dvh; border-radius: 14px; }
+  #form-curso .curso-contenido-card-cabecera h4 { font-size: 18px; }
+  #form-curso .curso-contenido-cerrar { top: 14px; right: 12px; }
+  #form-curso .curso-contenido-bloque { padding: 14px; }
+  #form-curso :is(.curso-media-grid, .editor-media-nivel) { grid-template-columns: minmax(0, 1fr); }
+  #form-curso .curso-contenido-bloque-titulo { flex-direction: column; gap: 5px; }
+  #form-curso .editor-temas { margin: 0 8px; }
+  #form-curso .editor-tema { padding: 10px; }
+  #form-curso .editor-subtema { padding: 12px; }
+  #form-curso :is(.editor-modulo-cabecera, .editor-tema-cabecera) > input { order: 5; flex-basis: 100%; width: 100%; }
+  #form-curso .editor-subtema-tipo-boton { padding: 8px 10px; }
+  #form-curso .curso-evaluacion-config { flex-direction: column; align-items: stretch; padding: 16px; }
+  #form-curso .curso-editor-acciones { flex-wrap: wrap; }
+  #form-curso .curso-editor-ayuda { width: 100%; }
+}
+/* Catálogos: dos columnas alineadas y una columna en pantallas pequeñas. */
+#form-curso .curso-editor-catalogos { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 20px; align-items: start; }
+#form-curso .curso-editor-catalogos > .campo { min-width: 0; margin: 0; }
+@media (max-width: 600px) {
+  #form-curso .curso-editor-catalogos { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+}
+.curso-plantilla-constancia{display:grid;gap:8px;padding:14px;border:1px solid #dbe4ed;border-radius:10px;background:#f8fafc}
+.curso-plantilla-constancia select{width:100%;min-width:0;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#263238}
+.curso-plantilla-constancia small,.curso-plantilla-revision small{display:block;color:#64748b;line-height:1.5}
+.curso-plantilla-revision{display:grid;gap:12px;margin:0 0 16px;padding:14px;border:1px solid #dbe4ed;border-radius:10px;background:#f8fafc}
+.curso-plantilla-revision>div:first-child{display:grid;gap:4px}.curso-plantilla-revision-acciones{display:flex;flex-wrap:wrap;align-items:end;gap:8px}
+.curso-plantilla-revision-comentario{display:grid;flex:1 1 100%;gap:5px;font-size:12px;font-weight:600;color:#475569}
+.curso-plantilla-revision-comentario textarea{width:100%;box-sizing:border-box;padding:9px;border:1px solid #cbd5e1;border-radius:8px;font:inherit;font-weight:400}
+.revision-curso-plantilla{display:grid;gap:8px;margin:14px 0;padding:12px;border:1px solid #dbe4ed;border-radius:10px;background:#f8fafc}
+.curso-plantilla-instructor{display:grid;gap:5px;margin:0 0 14px;padding:12px;border:1px solid #dbe4ed;border-radius:10px;background:#f8fafc;color:#334155}
+.curso-plantilla-instructor span,.curso-plantilla-instructor small{font-size:12px;color:#64748b;line-height:1.5}

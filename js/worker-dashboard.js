@@ -58,6 +58,23 @@ function obtenerThumbnailSegura(url) {
 
 let solicitudMisCursos = 0;
 let cargasMisCursosActivas = 0;
+function firmaDatosCursos(items) {
+  return items.map(({ curso = {}, progreso: avance = {}, asignado = true }) => [
+    curso.id,
+    curso.versionActual,
+    curso.nombre,
+    curso.estado,
+    curso.fechaInicio,
+    curso.fechaFin,
+    curso.horas,
+    avance.estado,
+    avance.porcentaje,
+    avance.bloqueadoPorExamen,
+    avance.examenAprobado,
+    Array.isArray(avance.completadas) ? avance.completadas.length : 0,
+    asignado,
+  ].join("\u001f")).join("\u001e");
+}
 async function cargarMisCursos({ silencioso = false } = {}) {
   if (silencioso && cargasMisCursosActivas > 0) return;
   cargasMisCursosActivas++;
@@ -79,7 +96,7 @@ async function cargarMisCursos({ silencioso = false } = {}) {
     const nuevosCursos = await progreso.misCursos();
     if (solicitudActual !== solicitudMisCursos || sesion.rol() !== "trabajador"
         || Number(sesion.usuario()?.id) !== Number(trabajadorActual?.id)) return;
-    if (silencioso && JSON.stringify(nuevosCursos) === JSON.stringify(itemsCursos)) return;
+    if (silencioso && firmaDatosCursos(nuevosCursos) === firmaDatosCursos(itemsCursos)) return;
     itemsCursos = nuevosCursos;
     cursosVisibles = itemsCursos;
     actualizarEstadisticas(itemsCursos);
@@ -466,5 +483,6 @@ window.addEventListener("storage", (evento) => {
   }
 });
 
-// Consulta cambios aunque el trabajador mantenga esta pagina abierta.
-setInterval(consultarHorariosActualizados, 5000);
+// En modo demo, la sincronización entre pestañas usa el evento `storage`.
+// Evita volver a descargar y clonar videos/imágenes cada cinco segundos.
+if (!MOCK_MODE) setInterval(consultarHorariosActualizados, 60000);
